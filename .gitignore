@@ -1,0 +1,7 @@
+.settings/
+.gradle/
+algo.sublime-project
+algo.sublime-workspace
+build/
+project.properties
+.classpath

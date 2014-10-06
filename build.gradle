@@ -1,0 +1,14 @@
+apply plugin: 'java'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile 'junit:junit:4.8.2'
+}
+
+jar {
+    baseName = 'srin-algo'
+    version =  '0.0.1'
+}
