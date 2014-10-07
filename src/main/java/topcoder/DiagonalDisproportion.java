@@ -7,9 +7,9 @@ public class DiagonalDisproportion {
 		int main = 0;
 		int collateral = 0;
 
-		for (int i = 0; i < N; i++) {
+		for (int i = 0, j = N-1; i < N; i++, j--) {
 			main += Character.getNumericValue(matrix[i].charAt(i));
-			collateral += Character.getNumericValue(matrix[i].charAt(N-i-1));
+			collateral += Character.getNumericValue(matrix[i].charAt(j));
 		}
 
 		return main - collateral;
