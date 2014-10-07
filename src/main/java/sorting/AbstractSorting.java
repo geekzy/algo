@@ -1,21 +1,48 @@
 package sorting;
 
-public abstract AbstractSorting {
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.IOException;
 
-	public abstract void sort(Compareable[] a);
+public abstract class AbstractSorting {
 
-	public boolean less(Compareable v, Compareable w) {}
+	public abstract void sort(Comparable[] a);
 
-	public void exch(Compareable[] a, int i, int j) {}
+	public boolean less(Comparable v, Comparable w) {
+		return v.compareTo(w) < 0;
+	}
 
-	public void show(Compareable[] a) {}
+	public void exch(Comparable[] a, int i, int j) {
+		Comparable t = a[i]; a[i] = a[j]; a[j] = t;
+	}
 
-	public boolean isSorted(Compareable[] a) {}
+	public void show(Comparable[] a) {
+		
+		for (int i = 0; i < a.length; i++) {
+			System.out.print(a[i] + " ");
+		}
+		
+		System.out.println();
+	}
+
+	public boolean isSorted(Comparable[] a) {
+		
+		for (int i = 1; i < a.length; i++) {
+			if (less(a[i], a[i-1])) { return false; }
+		}
+
+		return true;
+	}
 
 	public void execute(String[] args) {
-		String[] a = new BufferedReader(new InputStreamReader(System.in)).readline().trim().split(" ");
-		sort(a);
-		assert isSorted(a);
-		show(a);
+		try {
+			String[] a = new BufferedReader(new InputStreamReader(System.in)).readLine().trim().split(" ");
+			sort(a);
+			if (isSorted(a)) {
+				show(a);
+			}
+		} 
+		catch (IllegalArgumentException e) {}
+		catch (IOException e) {}
 	}
 }
