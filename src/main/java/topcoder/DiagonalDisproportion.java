@@ -3,7 +3,7 @@ package topcoder;
 public class DiagonalDisproportion {
 
 	public int getDisproportion(String[] matrix) {
-		int N = matrix[0].length();
+		int N = matrix.length;
 		int main = 0;
 		int collateral = 0;
 
