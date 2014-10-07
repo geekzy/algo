@@ -12,3 +12,7 @@ jar {
     baseName = 'srin-algo'
     version =  '0.0.1'
 }
+
+test {
+    maxHeapSize = "256m"
+}
