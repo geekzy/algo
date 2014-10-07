@@ -5,3 +5,4 @@ algo.sublime-workspace
 build/
 project.properties
 .classpath
+.~lock*
