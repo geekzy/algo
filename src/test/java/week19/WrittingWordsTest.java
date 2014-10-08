@@ -6,12 +6,12 @@ import org.junit.Test;
 
 public class WrittingWordsTest {
     private static WrittingWords sWrittingWords;
-    
+
     @Before
     public void setup() {
         sWrittingWords = new WrittingWords();
     }
-    
+
     @Test
     public void testWrite() {
         // Config
