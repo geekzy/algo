@@ -1,0 +1,107 @@
+Problem 1.
+Professor X wants to create a code that counts a distinct digit it contains in decimal number(integer). For example if we have an integer 352, then we have 3 distinct digits in that number (3, 5, and 2). Other example if we have integer 2442131, then we have 4 distinct digits in that number (2, 4, 1, and 3).
+Can you help Professor to write the code?
+Time limit: 1 second (Java: 2 seconds)
+
+Input format
+
+There can be more than one test case in the input file. The first line has T, the number of test cases.
+Then the total T test cases are provided in the following lines (T ≤ 10).
+In each test case, one integer N will be provided. N will be between 0 to 1,000,000,000
+
+Output format
+
+Generate answer on each line for each question.
+Count the distinct digits from each integer provided
+
+Example of Input
+
+6
+352
+2442131
+0
+1000000000
+1234567890
+1234554321
+
+Example of Output
+
+3
+4
+1
+2
+10
+5
+
+
+Problem 2.
+Your printer has been infected by a virus and is printing in a unique ways. You realize that it is printing every line inside-out. In other words, the left half of each line is being printed starting in the middle of line and proceeding out toward left margin. Similarly, the right half of each line is being printed starting at right margin proceeding in toward middle of the line. For example, the line “ABCD” is printed as “BADC”, or the line “ABCDEFGH” is printed as “DCBAHGFE”. The same goes with space, like the line “A FILE” is printed as “F AELI”
+Write a code to unscramble a String line from its printed form back to its original order. You can assume that every line contains an even number of characters.
+Time limit: 1 second (Java: 2 seconds)
+
+Input format
+
+There can be more than one test case in the input file. The first line has T, the number of test cases.
+Then the total T test cases are provided in the following lines (T ≤ 10).
+In each test case, one String X will be provided. X will contain an even number of characters. X will contain only uppercase letters (‘A’ – ‘Z’) and spaces (‘ ‘).
+
+Output format
+
+Generate answer on each line for each question.
+Unscramble the string provided using mentioned algorithm above
+
+Example of Input
+
+6
+CBAFED
+I ENIL SIHTHSIREBBIG S
+LEVELKAYAK
+H YPAAHSYADILO
+RUT OWT SNEH HCNERF EERHTEGDIRTRAP A DNA SEVODELT
+AB
+
+Example of Output
+
+ABCDEF
+THIS LINE IS GIBBERISH
+LEVELKAYAK
+HAPPY HOLIDAYS
+THREE FRENCH HENS TWO TURTLEDOVES AND A PARTRIDGE
+AB
+
+
+Problem 3.
+Anagram is a word or phrase formed by reordering the letters of another word or phrase. For example if we have a word “SILENT”, we can rearrange the letter and make a word “LISTEN”. Thus, we can said that “SILENT” and “LISTEN” is an anagram.
+Write a code that check whenever 2 input words provided is an anagram or not
+
+Time limit: 1 second (Java: 2 seconds)
+
+Input format
+
+There can be more than one test case in the input file. The first line has T, the number of test cases.
+Then the total T test cases are provided in the following lines (T ≤ 10).
+In each test case, 2 words will be provided separated by space. Note that all words will be using upper case letter
+
+Output format
+
+Generate each answer on each line for each question.
+Simply print “anagram” when the provided word is an anagram, or print “not anagram” when the provided word is not an anagram.
+
+Example of Input
+
+6
+SILENT LISTEN
+MORE ROOM
+STAIN SAINT
+SAMSUNG SAMSUNG
+AAABB ABAB
+A A
+
+Example of Output
+
+anagram
+not anagram
+anagram
+anagram
+not anagram
+anagram
