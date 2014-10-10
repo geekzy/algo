@@ -32,7 +32,7 @@ class AnagramCheck {
         /*
            Make new scanner from standard input System.in, and read data.
          */
-        Scanner sc = new Scanner(new FileInputStream(args[0]));
+        Scanner sc = new Scanner(new FileInputStream("probs/Problem_20141008/sample_input_3.txt"));
         //Scanner sc = new Scanner(System.in);
 
         int T = sc.nextInt();sc.nextLine();

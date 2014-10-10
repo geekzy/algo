@@ -30,8 +30,8 @@ class VirusCrypt {
         /*
            Make new scanner from standard input System.in, and read data.
          */
-        //Scanner sc = new Scanner(new FileInputStream(args[0]));
-        Scanner sc = new Scanner(System.in);
+        Scanner sc = new Scanner(new FileInputStream("probs/Problem_20141008/sample_input_2.txt"));
+        //Scanner sc = new Scanner(System.in);
 
         int T = sc.nextInt();sc.nextLine();
         for(int test_case = 0; test_case < T; test_case++) {
