@@ -1,0 +1,74 @@
+Problem 1
+=========
+A typical phone pad has the following layout:
+1  2  3
+4  5  6
+7  8  9
+*  0  #
+
+The finger movement distance between any pair of keys is defined as follows. For example the key ‘6’ is 0 units away from ‘6’ itself, 1 unit away from ‘3’, ‘5’, and ‘9’, 2 units away from ‘2’, ‘4’, ‘8’ and ‘#’, 3 units away from ‘1’, ‘7’, and ‘0’, and 4 units away from ‘*’. You will be given a string N as a phone number. Write a code to count a total movement distance required to dial the phone number. Note that finger is initially on key ‘5’.
+
+Input format
+------------
+There can be more than one test case in the input file. The first line has T, the number of test cases.
+Then the total T test cases are provided in the following lines (T ≤ 10).
+In each test case, one string N will be provided. N will be between 3 to 20 characters length.
+In each test case, string N will contains only ‘0’ – ‘9’ characters.
+
+Output format
+-------------
+Generate answer on each line for each question.
+Count the distance needed to dial the phone number N.
+
+Example of Input
+----------------
+5
+911
+5555555
+6666666
+8606335540
+8606574276
+
+Example of Output
+-----------------
+6
+0
+1
+16
+21
+
+Problem 2
+=========
+You are playing with a deck of cards, half of the cards are red and other half are black. After your friend shuffles the card, you cut the deck. Your friend then begins to turn the cards over one at a time, starting from the top of the deck. If, at any time, there are more red cards showing than black cards, you lose. If this never occurs by the time all the cards have been turned up, you win.
+
+“Cutting the deck” means to take a stack of cards off the top of the deck, and place this stack on the bottom.
+
+You will be given a String deck, representing the cards. ‘R’ indicates a red card, and ‘B’ indicates a black card. The first character of deck represents the top card, and the last character represents the bottom card. Return the smallest number of card you should cut in order to win the game.
+
+Input format
+------------
+There can be more than one test case in the input file. The first line has T, the number of test cases.
+Then the total T test cases are provided in the following lines (T ≤ 10).
+In each test case, one String deck will be provided. deck will contain between 2 to 50 characters, and will only contains the same number of ‘R’ and ‘B’ characters.
+
+Output format
+-------------
+Generate answer on each line for each question.
+Count the smallest number of cards you should cut in order to win the game.
+
+Example of Input
+----------------
+5
+BRBRBR
+RBRBRB
+BBBRRRRB
+BR
+RBRBBRRRRBBBRBBRRBRBBRRRBRBBBRBRBRBRBRRB
+
+Example of Output
+-----------------
+0
+1
+7
+1
+9
