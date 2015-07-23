@@ -1,5 +1,8 @@
 apply plugin: 'java'
 apply plugin: 'eclipse'
+apply plugin: 'application'
+
+mainClassName = 'session6.LLStack'
 
 repositories {
     mavenCentral()
@@ -16,9 +19,4 @@ jar {
 
 test {
     maxHeapSize = "256m"
-}
-
-task execute(type:JavaExec) {
-   main = mainClass
-   classpath = sourceSets.main.runtimeClasspath
 }
