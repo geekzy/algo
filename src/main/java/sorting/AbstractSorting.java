@@ -18,8 +18,8 @@ public abstract class AbstractSorting {
 
     public void show(Comparable[] a, long startTime, long endTime) {
 
-        for (int i = 0; i < a.length; i++) {
-            System.out.print(a[i] + " ");
+        for (Comparable compA : a) {
+            System.out.print(compA + " ");
         }
 
         System.out.println();
@@ -47,7 +47,6 @@ public abstract class AbstractSorting {
                 show(a, startTime, endTime);
             }
         }
-        catch (IllegalArgumentException e) {}
-        catch (IOException e) {}
+        catch (IllegalArgumentException | IOException ignored) {}
     }
 }
