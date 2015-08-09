@@ -11,77 +11,23 @@ import java.util.Scanner;
 @SuppressWarnings("unused")
 public class SimpleGraph {
 
-    private class Stack<T> implements Iterable<T> {
-        Node first;
-        int N;
-
-        public boolean isEmpty() {
-            return first == null;
-        } // or N == 0;
-
-        public int size() {
-            return N;
-        }
-
-        public void push(T item) {
-            Node old = first;
-            first = new Node();
-            first.item = item;
-            first.next = old;
-            N++;
-        }
-
-        public T pop() {
-            T item = first.item;
-            first = first.next;
-            N--;
-            return item;
-        }
-
-        @Override
-        public Iterator<T> iterator() {
-            return new StackIterator();
-        }
-
-        private class StackIterator implements Iterator<T> {
-            private Node current = first;
-
-            @Override
-            public boolean hasNext() {
-                return current != null;
-            }
-
-            @Override
-            public T next() {
-                T item = current.item;
-                current = current.next;
-                return item;
-            }
-        }
-
-        private class Node {
-            T item;
-            Node next;
-        }
-    }
-
     private class Bag<T> implements Iterable<T> {
         Node first;
         int N;
 
         public boolean isEmpty() {
             return first == null;
-        } // or N == 0;
+        }
 
         public int size() {
             return N;
         }
 
         public void add(T item) {
-            Node old = first;
-            first = new Node();
-            first.item = item;
-            first.next = old;
+            Node node = new Node();
+            node.item = item;
+            node.next = first;
+            first = node;
             N++;
         }
 
@@ -112,25 +58,23 @@ public class SimpleGraph {
         }
     }
 
-    private class Graph {
-        // number of vertices
+    public class Graph {
         final int V;
-        // number of edges
         int E;
-        // ajacency list
         Bag<Integer>[] adjList;
 
+        @SuppressWarnings("unchecked")
         public Graph(int V) {
             this.V = V;
-            this.E = 0;
-            // create array of list (bag)
-            adjList = (Bag<Integer>[]) new Bag[V];
-            // initialize all item to empty
-            for (int v = 0; v < V; v++)
-                adjList[v] = new Bag<Integer>();
+            adjList = (Bag<Integer>[]) new Bag[this.V];
+            // initialize adjecency list
+            for (int v = 0; v < this.V; v++) {
+                adjList[v] = new Bag<>();
+            }
         }
 
         public void addEdge(int v, int w) {
+            // undirected so add both
             adjList[v].add(w);
             adjList[w].add(v);
             E++;
@@ -141,53 +85,23 @@ public class SimpleGraph {
         }
     }
 
-    private interface Path<T> {
-        // is there a path from s to v?
-        boolean hasPathTo(T v);
-
-        // Path from s to v
-        Iterable<T> pathTo(T v);
-    }
-
-    private class DepthFirstPath implements Path<Integer> {
-        // source/start of the trace
-        final int s;
-        // Has dfs been called for this vertex
+    private class DepthFirstSearch {
         boolean[] marked;
-        // last vertex on known path to this vertex
-        int[] edgeTo;
+        int count;
 
-        private DepthFirstPath(Graph g, int s) {
-            this.s = s;
-            marked = new boolean[g.V];
-            edgeTo = new int[g.V];
-            dfs(g, s);
+        public DepthFirstSearch(Graph G, int s) {
+            marked = new boolean[G.V];
+            dfs(G, s);
         }
 
-        private void dfs(Graph g, int v) {
+        public void dfs(Graph G, int v) {
             marked[v] = true;
-            for (Integer w : g.adjList(v)) {
+            count++;
+            for (Integer w : G.adjList(v)) {
                 if (!marked[w]) {
-                    edgeTo[w] = v;
-                    dfs(g, w);
+                    dfs(G, w);
                 }
             }
-        }
-
-        @Override
-        public boolean hasPathTo(Integer v) {
-            return marked[v];
-        }
-
-        @Override
-        public Iterable<Integer> pathTo(Integer v) {
-            if (!hasPathTo(v)) return null;
-            Stack<Integer> path = new Stack<Integer>();
-            for (int x = v; x != s; x = edgeTo[x]) {
-                path.push(x);
-            }
-            path.push(s);
-            return path;
         }
     }
 
@@ -200,36 +114,38 @@ public class SimpleGraph {
         System.setIn(new FileInputStream("probs/graph/simple_1.txt"));
         Scanner sc = new Scanner(System.in);
 
-        for (int t = 0; t < 1; t++) {
+        int T = sc.nextInt();
+        for (int tc = 0; tc < T; tc++) {
+
             int V = sc.nextInt();
             int E = sc.nextInt();
-            int X = sc.nextInt();
 
-            Graph g = new Graph(V);
-            /////////////////////////////////////////////////////////////
+            Graph G = new Graph(V);
             for (int e = 0; e < E; e++) {
+
                 int v = sc.nextInt();
                 int w = sc.nextInt();
-                g.addEdge(v, w);
-            }
-            System.out.println("Graph " + (t + 1) + " Loaded!");
 
-            for (int S = 0; S < g.V; S++) {
-                System.out.println("Traversing from " + S);
-                Path<Integer> search = new DepthFirstPath(g, S);
-                for (int v = 0; v < g.V; v++) {
-                    System.out.print(S + " to " + v + ": ");
-                    if (search.hasPathTo(v)) {
-                        for (Integer x : search.pathTo(v)) {
-                            if (x == S) System.out.print(x);
-                            else System.out.print("-" + x);
-                        }
-                    }
-                    System.out.println();
+                G.addEdge(v, w);
+            }
+
+            DepthFirstSearch search = new DepthFirstSearch(G, 0);
+            for (int v = 0; v < G.V; v++) {
+                if (search.marked[v]) System.out.print(v + " ");
+            }/*
+            for (int v = 0; v < V; v++) {
+                String items = "";
+                System.out.print("Adjecency List for " + v + ": ");
+                for (Integer item : G.adjList(v)) {
+                    items += "-" + item;
                 }
-            }
-            /////////////////////////////////////////////////////////////
+                System.out.println(items.substring(1));
+            }*/
+            System.out.println();
+            if (search.count != G.V) System.out.print("NOT ");
+            System.out.println("Connected!");
 
+            System.out.println("--------");
         }
     }
 }
