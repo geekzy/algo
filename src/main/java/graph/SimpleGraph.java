@@ -44,14 +44,18 @@ public class SimpleGraph {
         }
 
         private class StackIterator implements Iterator<T> {
+            private Node current = first;
+
             @Override
             public boolean hasNext() {
-                return false;
+                return current != null;
             }
 
             @Override
             public T next() {
-                return null;
+                T item = current.item;
+                current = current.next;
+                return item;
             }
         }
 
@@ -170,14 +174,16 @@ public class SimpleGraph {
             }
         }
 
+        @Override
         public boolean hasPathTo(Integer v) {
             return marked[v];
         }
 
+        @Override
         public Iterable<Integer> pathTo(Integer v) {
             if (!hasPathTo(v)) return null;
             Stack<Integer> path = new Stack<Integer>();
-            for (int x = 0; x != s; x = edgeTo[x]) {
+            for (int x = v; x != s; x = edgeTo[x]) {
                 path.push(x);
             }
             path.push(s);
@@ -194,10 +200,10 @@ public class SimpleGraph {
         System.setIn(new FileInputStream("probs/graph/simple_1.txt"));
         Scanner sc = new Scanner(System.in);
 
-        for (int t = 0; t < 2; t++) {
+        for (int t = 0; t < 1; t++) {
             int V = sc.nextInt();
             int E = sc.nextInt();
-            int S = sc.nextInt();
+            int X = sc.nextInt();
 
             Graph g = new Graph(V);
             /////////////////////////////////////////////////////////////
@@ -208,16 +214,19 @@ public class SimpleGraph {
             }
             System.out.println("Graph " + (t + 1) + " Loaded!");
 
-            Path<Integer> search = new DepthFirstPath(g, S);
-            for (int v = 0; v < g.V; v++) {
-                System.out.print(S + " to " + v + ": ");
-                if (search.hasPathTo(v)) {
-                    for (Integer x : search.pathTo(v)) {
-                        if (x == S) System.out.print(x);
-                        else System.out.print("-" + x);
+            for (int S = 0; S < g.V; S++) {
+                System.out.println("Traversing from " + S);
+                Path<Integer> search = new DepthFirstPath(g, S);
+                for (int v = 0; v < g.V; v++) {
+                    System.out.print(S + " to " + v + ": ");
+                    if (search.hasPathTo(v)) {
+                        for (Integer x : search.pathTo(v)) {
+                            if (x == S) System.out.print(x);
+                            else System.out.print("-" + x);
+                        }
                     }
+                    System.out.println();
                 }
-                System.out.println();
             }
             /////////////////////////////////////////////////////////////
 
