@@ -2,7 +2,6 @@ package graph;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.Iterator;
 import java.util.Scanner;
 
 /**
@@ -34,42 +33,11 @@ public class GraphDfsAlgorithm {
     }
 
     /**
-     * Simple data structure iterator, iterating relatively from first node.
-     *
-     * @param <T> The type of the node to iterate.
-     */
-    private class StrucIterator<T> implements Iterator<T> {
-        /**
-         * Current node being iterated.
-         */
-        private Node<T> current;
-
-        public StrucIterator(Node<T> first) {
-            current = first;
-        }
-
-        @Override
-        public boolean hasNext() {
-            return current != null;
-        }
-
-        @Override
-        public T next() {
-            // grab the item
-            T item = current.item;
-            // iterate to next node
-            current = current.next;
-            // return the item
-            return item;
-        }
-    }
-
-    /**
      * Basic data structure to store collection of items with type T
      *
      * @param <T> The type of the item to be stored.
      */
-    private class Bag<T> implements Iterable<T> {
+    private class Bag<T> {
         Node<T> first;
         int N;
 
@@ -88,11 +56,6 @@ public class GraphDfsAlgorithm {
             first.next = old;
             N++;
         }
-
-        @Override
-        public Iterator<T> iterator() {
-            return new StrucIterator<>(first);
-        }
     }
 
     /**
@@ -100,7 +63,7 @@ public class GraphDfsAlgorithm {
      *
      * @param <T> The type of the stack.
      */
-    private class Stack<T> implements Iterable<T> {
+    private class Stack<T> {
         private Node<T> first;
         private int N;
 
@@ -125,11 +88,6 @@ public class GraphDfsAlgorithm {
             first = first.next;
             N--;
             return item;
-        }
-
-        @Override
-        public Iterator<T> iterator() {
-            return new StrucIterator<>(first);
         }
     }
 
@@ -170,8 +128,8 @@ public class GraphDfsAlgorithm {
             E++;
         }
 
-        Iterable<Integer> adjList(int v) {
-            // iterable instace of adjecency list
+        public Bag<Integer> adjList(int v) {
+            // adjecency list of v
             return adjList[v];
         }
     }
@@ -209,7 +167,7 @@ public class GraphDfsAlgorithm {
             return count;
         }
 
-        public Iterable<Integer> pathTo(int v) {
+        public Stack<Integer> pathTo(int v) {
             // if no path to v then obviously no path
             if (!hasPathTo(v)) return null;
             // put in stack as it's called depth first search
@@ -227,7 +185,9 @@ public class GraphDfsAlgorithm {
             // traversing counter increment
             count++;
             // start looking for v's adjecency items
-            for (Integer w : g.adjList(v)) {
+            Bag<Integer> bag = g.adjList(v);
+            for (Node<Integer> node = bag.first; node != null; node = node.next) {
+                Integer w = node.item;
                 // if hasn't been visited, start traversing from there
                 if (!marked[w]) {
                     // mark last known path to v
@@ -268,7 +228,9 @@ public class GraphDfsAlgorithm {
             for (int v = 0; v < graph.V; v++) {
                 System.out.print(S + " to " + v + ": ");
                 if (search.hasPathTo(v)) {
-                    for (Integer i : search.pathTo(v)) {
+                    Stack<Integer> stack = search.pathTo(v);
+                    for (Node<Integer> node = stack.first; node != null; node = node.next) {
+                        Integer i = node.item;
                         if (i == S) System.out.print(i);
                         else System.out.print("-" + i);
                     }
