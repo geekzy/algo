@@ -17,7 +17,7 @@ public class GraphDfsAlgorithm {
      *
      * @param <T> The type of the Node.
      */
-    private class Node<T> {
+    class Node<T> {
         /**
          * The type of the node.
          */
@@ -37,7 +37,7 @@ public class GraphDfsAlgorithm {
      *
      * @param <T> The type of the item to be stored.
      */
-    private class Bag<T> {
+    class Bag<T> {
         Node<T> first;
         int N;
 
@@ -63,15 +63,15 @@ public class GraphDfsAlgorithm {
      *
      * @param <T> The type of the stack.
      */
-    private class Stack<T> {
-        private Node<T> first;
-        private int N;
+    class Stack<T> {
+        Node<T> first;
+        int N;
 
         public boolean isEmpty() {
             return first == null;
         }
 
-        public int count() {
+        public int size() {
             return N;
         }
 
@@ -95,19 +95,19 @@ public class GraphDfsAlgorithm {
      * Graph represention
      */
     @SuppressWarnings("unchecked")
-    private class Graph {
+    class Graph {
         /**
          * Vertex of the Graph
          */
-        private final int V;
+        final int V;
         /**
          * Edge count of the Graph
          */
-        private int E;
+        int E;
         /**
          * Adjecency List of the Graph
          */
-        private Bag<Integer>[] adjList;
+        Bag<Integer>[] adjList;
 
         public Graph(int V) {
             // holds total of vertex and initialize edge count
@@ -139,13 +139,13 @@ public class GraphDfsAlgorithm {
      */
     private class DepthFirstSearch {
         // visted marker
-        private boolean[] marked;
+        boolean[] marked;
         // last vertext on known path
-        private int[] edgeTo;
+        int[] edgeTo;
         // visited count
-        private int count;
+        int count;
         // source
-        private int source;
+        int source;
 
         public DepthFirstSearch(Graph g, int source) {
             // instantiate the marker
@@ -179,7 +179,7 @@ public class GraphDfsAlgorithm {
             return path;
         }
 
-        private void dfs(Graph g, int v) {
+        void dfs(Graph g, int v) {
             // mark v as visted
             marked[v] = true;
             // traversing counter increment
