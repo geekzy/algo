@@ -12,7 +12,6 @@ import java.util.Scanner;
 public class BasicStucture {
 
     private class Stack<T> implements Iterable<T> {
-
         Node top;
         int N;
 
@@ -52,6 +51,10 @@ public class BasicStucture {
                 T item = current.item;
                 current = current.next;
                 return item;
+            }
+
+            @Override
+            public void remove() {
             }
         }
 
@@ -107,6 +110,10 @@ public class BasicStucture {
                 current = current.next;
                 return item;
             }
+
+            @Override
+            public void remove() {
+            }
         }
 
         private class Node {
@@ -148,6 +155,10 @@ public class BasicStucture {
                 T item = current.item;
                 current = current.next;
                 return item;
+            }
+
+            @Override
+            public void remove() {
             }
         }
 

@@ -125,6 +125,10 @@ public class LinkedListPractice {
                 return item;
             }
 
+            @Override
+            public void remove() {
+            }
+
         }
 
         private class Node {
