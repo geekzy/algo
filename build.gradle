@@ -20,3 +20,9 @@ jar {
 test {
     maxHeapSize = "256m"
 }
+
+task execute(type: JavaExec) {
+    main = 'graph.GraphDfsAlgorithm'
+    //main = 'graph.GraphBfsAlgorithm'
+    classpath = sourceSets.main.runtimeClasspath
+}

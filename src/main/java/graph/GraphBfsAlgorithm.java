@@ -4,14 +4,13 @@ import java.io.FileInputStream;
 import java.util.Scanner;
 
 /**
- * DFS implementation of Graph traversing algorithm.
+ * BFS implementation of Graph traversing algorithm.
  *
  * @author Imam Kurniawan (geekzy@gmail.com)
  */
 @SuppressWarnings({"unused", "unchecked"})
-public class GraphDfsAlgorithm {
-
-    /**
+public class GraphBfsAlgorithm {
+/**
      * Simple Node with generic Type.
      *
      * @param <T> The type of the Node.
@@ -33,6 +32,7 @@ public class GraphDfsAlgorithm {
 
     /**
      * Basic data structure to store collection of items with type T
+     * using Stack implementation to store items
      *
      * @param <T> The type of the item to be stored.
      */
@@ -54,6 +54,40 @@ public class GraphDfsAlgorithm {
             first.item = item;
             first.next = old;
             N++;
+        }
+    }
+
+    /**
+     * Queue data structure to support BFS when traversing Graph
+     */
+    private class Queue<T> {
+        Node<T> first;
+        Node<T> last;
+        int N;
+
+        public boolean isEmpty() {
+            return first == null;
+        }
+
+        public int size() {
+            return N;
+        }
+
+        public void enqueue(T item) {
+            Node<T> l = last;
+            last = new Node<>();
+            last.item = item;
+            if (isEmpty()) first = last;
+            else last.next = l;
+            N++;
+        }
+
+        public T dequeue() {
+            T item = first.item;
+            first = first.next;
+            if (isEmpty()) last = null;
+            N--;
+            return item;
         }
     }
 
@@ -100,36 +134,31 @@ public class GraphDfsAlgorithm {
     }
 
     /**
-     * Depth first search algorithm to traverse through a Graph
+     * Breadth first search algorithm to traverse through a Graph
      */
-    private class DepthFirstSearch {
-        // visted marker
+    private class BreadthFirstPath {
+        // visited marker
         boolean[] marked;
-        // last vertext on known path
+        // last vertex on known path
         int[] edgeTo;
-        // visited count
-        int count;
         // source
         int source;
+        // visited count
+        int count;
 
-        public DepthFirstSearch(Graph g, int source) {
-            // instantiate the marker
+        public BreadthFirstPath(Graph g, int s) {
+            // instantiate marker
             marked = new boolean[g.V];
-            // instantiate last knwon path
+            // instantiate last vertext on known path
             edgeTo = new int[g.V];
             // assign source
-            this.source = source;
+            this.source = s;
             // start traversing
-            dfs(g, source);
+            bfs(g, s);
         }
 
-        public boolean hasPathTo(int s) {
-            // marker of s, true for visited, otherwise false
-            return marked[s];
-        }
-
-        public int count() {
-            return count;
+        public boolean hasPathTo(int v) {
+            return marked[v];
         }
 
         public Bag<Integer> pathTo(int v) {
@@ -139,43 +168,47 @@ public class GraphDfsAlgorithm {
             Bag<Integer> path = new Bag<>();
             // traverse from v the way to source using edgeTo
             for (int x = v; x != source; x = edgeTo[x]) path.add(x);
-            path.add(source); // finally push source to make it first node in collection
-            // return the Stack
+            path.add(source);
             return path;
         }
 
-        public void dfs(Graph g, int v) {
-            // mark v as visted
-            marked[v] = true;
-            // traversing counter increment
+        private void bfs(Graph g, int s) {
+            // create a queue
+            Queue<Integer> queue = new Queue<>();
+            // mark the source as visited
+            marked[s] = true;
             count++;
-            // start looking for v's adjecency items
-            Bag<Integer> adjList = g.adjList(v);
-            for (Node<Integer> n = adjList.first; n != null; n = n.next) {
-                Integer w = n.item;
-                // if hasn't been visited, start traversing from there
-                if (!marked[w]) {
-                    // mark last known path to v
-                    edgeTo[w] = v;
-                    // recursively search from w
-                    dfs(g, w);
+            // put it on the queue
+            queue.enqueue(s);
+            while(!queue.isEmpty()) {
+                // remove next vertex from the queue
+                Integer v = queue.dequeue();
+                // get the adjecency of the vertex
+                Bag<Integer> adjList = g.adjList[v];
+                for (Node<Integer> n = adjList.first; n != null; n = n.next) {
+                    Integer w = n.item;
+                    // for every unmarked adjecency vertex
+                    if (!marked[w]) {
+                        // save last edge on a shortest path
+                        edgeTo[w] = v;
+                        // mark it cos it's now known
+                        marked[w] = true;
+                        count++;
+                        // add it to the queue
+                        queue.enqueue(w);
+                    }
                 }
             }
         }
     }
 
-    public static void main(String[] args) throws Throwable {
-        GraphDfsAlgorithm app = new GraphDfsAlgorithm();
-        app.start();
-    }
-
-    private void start() throws Throwable {
+    public void start() throws Throwable {
         System.setIn(new FileInputStream("probs/graph/simple_1.txt"));
         Scanner sc = new Scanner(System.in);
 
-        int T = sc.nextInt();
-        for (int tc = 0; tc < T; tc++) {
-            ///////////////////////////////////////////////////////////////////
+        int TC = sc.nextInt();
+        for (int tc = 0; tc < TC; tc++) {
+        ///////////////////////////////////////////////////////////////////
 
             int V = sc.nextInt();
             int E = sc.nextInt();
@@ -189,7 +222,7 @@ public class GraphDfsAlgorithm {
                 graph.addEdge(a, b);
             }
 
-            DepthFirstSearch path = new DepthFirstSearch(graph, S);
+            BreadthFirstPath path = new BreadthFirstPath(graph, S);
             for (int v = 0; v < graph.V; v++) {
                 System.out.print(S + " to " + v + ": ");
                 if (path.hasPathTo(v)) {
@@ -208,5 +241,10 @@ public class GraphDfsAlgorithm {
             System.out.println();
             ///////////////////////////////////////////////////////////////////
         }
+    }
+
+    public static void main(String[] args) throws Throwable {
+        GraphBfsAlgorithm app = new GraphBfsAlgorithm();
+        app.start();
     }
 }
