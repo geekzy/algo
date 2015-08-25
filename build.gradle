@@ -1,5 +1,8 @@
 apply plugin: 'java'
 apply plugin: 'eclipse'
+apply plugin: 'application'
+
+mainClassName = 'session6.LLStack'
 
 repositories {
     mavenCentral()
@@ -16,4 +19,10 @@ jar {
 
 test {
     maxHeapSize = "256m"
+}
+
+task execute(type: JavaExec) {
+    main = 'graph.GraphDfsAlgorithm'
+    //main = 'graph.GraphBfsAlgorithm'
+    classpath = sourceSets.main.runtimeClasspath
 }

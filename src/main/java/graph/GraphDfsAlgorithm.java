@@ -1,7 +1,6 @@
 package graph;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 /**
@@ -9,7 +8,7 @@ import java.util.Scanner;
  *
  * @author Imam Kurniawan (geekzy@gmail.com)
  */
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "unchecked"})
 public class GraphDfsAlgorithm {
 
     /**
@@ -34,7 +33,6 @@ public class GraphDfsAlgorithm {
 
     /**
      * Basic data structure to store collection of items with type T
-     * using Stack algorithm to store data.
      *
      * @param <T> The type of the item to be stored.
      */
@@ -62,7 +60,6 @@ public class GraphDfsAlgorithm {
     /**
      * Graph represention
      */
-    @SuppressWarnings("unchecked")
     class Graph {
         /**
          * Vertex of the Graph
@@ -115,10 +112,10 @@ public class GraphDfsAlgorithm {
         // source
         int source;
 
-        public DepthFirstSearch(Graph g, Integer source) {
+        public DepthFirstSearch(Graph g, int source) {
             // instantiate the marker
             marked = new boolean[g.V];
-            // instantiate last known path
+            // instantiate last knwon path
             edgeTo = new int[g.V];
             // assign source
             this.source = source;
@@ -126,32 +123,36 @@ public class GraphDfsAlgorithm {
             dfs(g, source);
         }
 
-        public boolean hasPathTo(Integer s) {
+        public boolean hasPathTo(int s) {
             // marker of s, true for visited, otherwise false
             return marked[s];
         }
 
-        public Bag<Integer> pathTo(Integer v) {
-            // if no path to v then obviously no path
+        public int count() {
+            return count;
+        }
+
+        public Bag<Integer> pathTo(int v) {
+            // if v was never visted then obviously no path
             if (!hasPathTo(v)) return null;
-            // put in stack as it's called depth first search
+            // prepare the collection of paths
             Bag<Integer> path = new Bag<>();
-            // traverse from v the way to source
+            // traverse from v the way to source using edgeTo
             for (int x = v; x != source; x = edgeTo[x]) path.add(x);
-            path.add(source); // finally push source to make it first node in stack
-            // return the stack
+            path.add(source); // finally push source to make it first node in collection
+            // return the Stack
             return path;
         }
 
-        private void dfs(Graph g, Integer v) {
+        public void dfs(Graph g, int v) {
             // mark v as visted
             marked[v] = true;
             // traversing counter increment
             count++;
             // start looking for v's adjecency items
-            Bag<Integer> bag = g.adjList(v);
-            for (Node<Integer> node = bag.first; node != null; node = node.next) {
-                Integer w = node.item;
+            Bag<Integer> adjList = g.adjList(v);
+            for (Node<Integer> n = adjList.first; n != null; n = n.next) {
+                Integer w = n.item;
                 // if hasn't been visited, start traversing from there
                 if (!marked[w]) {
                     // mark last known path to v
@@ -163,12 +164,12 @@ public class GraphDfsAlgorithm {
         }
     }
 
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) throws Throwable {
         GraphDfsAlgorithm app = new GraphDfsAlgorithm();
         app.start();
     }
 
-    private void start() throws FileNotFoundException {
+    private void start() throws Throwable {
         System.setIn(new FileInputStream("probs/graph/simple_1.txt"));
         Scanner sc = new Scanner(System.in);
 
@@ -188,13 +189,13 @@ public class GraphDfsAlgorithm {
                 graph.addEdge(a, b);
             }
 
-            DepthFirstSearch search = new DepthFirstSearch(graph, S);
+            DepthFirstSearch path = new DepthFirstSearch(graph, S);
             for (int v = 0; v < graph.V; v++) {
                 System.out.print(S + " to " + v + ": ");
-                if (search.hasPathTo(v)) {
-                    Bag<Integer> paths = search.pathTo(v);
-                    for (Node<Integer> node = paths.first; node != null; node = node.next) {
-                        Integer i = node.item;
+                if (path.hasPathTo(v)) {
+                    Bag<Integer> Bag = path.pathTo(v);
+                    for (Node<Integer> n = Bag.first; n != null; n = n.next) {
+                        Integer i = n.item;
                         if (i == S) System.out.print(i);
                         else System.out.print("-" + i);
                     }
@@ -202,7 +203,7 @@ public class GraphDfsAlgorithm {
                 System.out.println();
             }
 
-            if (search.count != graph.V) System.out.print("NOT ");
+            if (path.count != graph.V) System.out.print("NOT ");
             System.out.println("Connected!");
             System.out.println();
             ///////////////////////////////////////////////////////////////////

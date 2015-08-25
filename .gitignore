@@ -1,4 +1,4 @@
-.idea
+.idea/
 .settings/
 .gradle/
 algo.sublime-project
@@ -8,3 +8,4 @@ project.properties
 .classpath
 .~lock*
 algo.iml
+.DS_Store

@@ -1,18 +1,16 @@
 package graph;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 /**
  * BFS implementation of Graph traversing algorithm.
  *
- * @author Ade Imam Kurniawan (ade.imam@samsung.com) SRIN
+ * @author Imam Kurniawan (geekzy@gmail.com)
  */
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "unchecked"})
 public class GraphBfsAlgorithm {
-
-    /**
+/**
      * Simple Node with generic Type.
      *
      * @param <T> The type of the Node.
@@ -34,7 +32,7 @@ public class GraphBfsAlgorithm {
 
     /**
      * Basic data structure to store collection of items with type T
-     * using Stack algorithm to store data.
+     * using Stack implementation to store items
      *
      * @param <T> The type of the item to be stored.
      */
@@ -60,9 +58,42 @@ public class GraphBfsAlgorithm {
     }
 
     /**
+     * Queue data structure to support BFS when traversing Graph
+     */
+    private class Queue<T> {
+        Node<T> first;
+        Node<T> last;
+        int N;
+
+        public boolean isEmpty() {
+            return first == null;
+        }
+
+        public int size() {
+            return N;
+        }
+
+        public void enqueue(T item) {
+            Node<T> l = last;
+            last = new Node<>();
+            last.item = item;
+            if (isEmpty()) first = last;
+            else last.next = l;
+            N++;
+        }
+
+        public T dequeue() {
+            T item = first.item;
+            first = first.next;
+            if (isEmpty()) last = null;
+            N--;
+            return item;
+        }
+    }
+
+    /**
      * Graph represention
      */
-    @SuppressWarnings("unchecked")
     class Graph {
         /**
          * Vertex of the Graph
@@ -102,51 +133,82 @@ public class GraphBfsAlgorithm {
         }
     }
 
-    private class BreadthFirstSearch {
-        // visted marker
+    /**
+     * Breadth first search algorithm to traverse through a Graph
+     */
+    private class BreadthFirstPath {
+        // visited marker
         boolean[] marked;
-        // last vertext on known path
+        // last vertex on known path
         int[] edgeTo;
-        // visited count
-        int count;
         // source
         int source;
+        // visited count
+        int count;
 
-        public BreadthFirstSearch(Graph g, Integer s) {
-            // instantiate the marker
+        public BreadthFirstPath(Graph g, int s) {
+            // instantiate marker
             marked = new boolean[g.V];
-            // instantiate last known path
+            // instantiate last vertext on known path
             edgeTo = new int[g.V];
-            // assign the source
+            // assign source
             this.source = s;
             // start traversing
             bfs(g, s);
         }
 
-        public boolean hasPathTo(Integer s) {
-            return marked[s];
+        public boolean hasPathTo(int v) {
+            return marked[v];
         }
 
-        public Bag<Integer> pathTo(Integer s) {
-            return null;
+        public Bag<Integer> pathTo(int v) {
+            // if v was never visted then obviously no path
+            if (!hasPathTo(v)) return null;
+            // prepare the collection of paths
+            Bag<Integer> path = new Bag<>();
+            // traverse from v the way to source using edgeTo
+            for (int x = v; x != source; x = edgeTo[x]) path.add(x);
+            path.add(source);
+            return path;
         }
 
-        private void bfs(Graph g, Integer s) {
+        private void bfs(Graph g, int s) {
+            // create a queue
+            Queue<Integer> queue = new Queue<>();
+            // mark the source as visited
+            marked[s] = true;
+            count++;
+            // put it on the queue
+            queue.enqueue(s);
+            while(!queue.isEmpty()) {
+                // remove next vertex from the queue
+                Integer v = queue.dequeue();
+                // get the adjecency of the vertex
+                Bag<Integer> adjList = g.adjList[v];
+                for (Node<Integer> n = adjList.first; n != null; n = n.next) {
+                    Integer w = n.item;
+                    // for every unmarked adjecency vertex
+                    if (!marked[w]) {
+                        // save last edge on a shortest path
+                        edgeTo[w] = v;
+                        // mark it cos it's now known
+                        marked[w] = true;
+                        count++;
+                        // add it to the queue
+                        queue.enqueue(w);
+                    }
+                }
+            }
         }
     }
 
-    public static void main(String[] args) throws FileNotFoundException {
-        GraphBfsAlgorithm app = new GraphBfsAlgorithm();
-        app.start();
-    }
-
-    private void start() throws FileNotFoundException {
+    public void start() throws Throwable {
         System.setIn(new FileInputStream("probs/graph/simple_1.txt"));
         Scanner sc = new Scanner(System.in);
 
-        int T = sc.nextInt();
-        for (int tc = 0; tc < T; tc++) {
-            ///////////////////////////////////////////////////////////////////
+        int TC = sc.nextInt();
+        for (int tc = 0; tc < TC; tc++) {
+        ///////////////////////////////////////////////////////////////////
 
             int V = sc.nextInt();
             int E = sc.nextInt();
@@ -160,13 +222,13 @@ public class GraphBfsAlgorithm {
                 graph.addEdge(a, b);
             }
 
-            BreadthFirstSearch search = new BreadthFirstSearch(graph, S);
+            BreadthFirstPath path = new BreadthFirstPath(graph, S);
             for (int v = 0; v < graph.V; v++) {
                 System.out.print(S + " to " + v + ": ");
-                if (search.hasPathTo(v)) {
-                    Bag<Integer> paths = search.pathTo(v);
-                    for (Node<Integer> node = paths.first; node != null; node = node.next) {
-                        Integer i = node.item;
+                if (path.hasPathTo(v)) {
+                    Bag<Integer> Bag = path.pathTo(v);
+                    for (Node<Integer> n = Bag.first; n != null; n = n.next) {
+                        Integer i = n.item;
                         if (i == S) System.out.print(i);
                         else System.out.print("-" + i);
                     }
@@ -174,10 +236,15 @@ public class GraphBfsAlgorithm {
                 System.out.println();
             }
 
-            if (search.count != graph.V) System.out.print("NOT ");
+            if (path.count != graph.V) System.out.print("NOT ");
             System.out.println("Connected!");
             System.out.println();
             ///////////////////////////////////////////////////////////////////
         }
+    }
+
+    public static void main(String[] args) throws Throwable {
+        GraphBfsAlgorithm app = new GraphBfsAlgorithm();
+        app.start();
     }
 }
