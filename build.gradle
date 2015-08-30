@@ -22,7 +22,9 @@ test {
 }
 
 task execute(type: JavaExec) {
-    main = 'graph.GraphDfsAlgorithm'
+    main = 'graph.GraphTwoColors'
+    //main = 'graph.GraphCycle'
+    //main = 'graph.GraphDfsAlgorithm'
     //main = 'graph.GraphBfsAlgorithm'
     classpath = sourceSets.main.runtimeClasspath
 }

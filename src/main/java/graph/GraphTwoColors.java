@@ -4,12 +4,12 @@ import java.io.FileInputStream;
 import java.util.Scanner;
 
 /**
- * DFS implementation of Graph traversing algorithm.
+ * Bipartite checking implementation of Graph algorithm.
  *
  * @author Imam Kurniawan (geekzy@gmail.com)
  */
 @SuppressWarnings({"unused", "unchecked"})
-public class GraphDfsAlgorithm {
+public class GraphTwoColors {
 
     /**
      * Simple Node with generic Type.
@@ -55,6 +55,13 @@ public class GraphDfsAlgorithm {
             first.next = old;
             N++;
         }
+
+        public T get() {
+            T item = first.item;
+            first = first.next;
+            N--;
+            return item;
+        }
     }
 
     /**
@@ -66,6 +73,10 @@ public class GraphDfsAlgorithm {
          */
         final int V;
         /**
+         * Indicator of wheather nodes are directed.
+         */
+        final boolean directed;
+        /**
          * Edge count of the Graph
          */
         int E;
@@ -75,9 +86,14 @@ public class GraphDfsAlgorithm {
         Bag<Integer>[] adjList;
 
         public Graph(int V) {
+            this(V, false);
+        }
+
+        public Graph(int V, boolean directed) {
             // holds total of vertex and initialize edge count
             this.V = V;
             this.E = 0;
+            this.directed = directed;
             // create array of adjecency list
             adjList = (Bag<Integer>[]) new Bag[V];
             // instantiate each adjecency list in array
@@ -87,8 +103,8 @@ public class GraphDfsAlgorithm {
         public void addEdge(int v, int w) {
             // add w to v's adjecency list
             adjList[v].add(w);
-            // add v to w's adjecency list (since it's undirected graph)
-            adjList[w].add(v);
+            // add v to w's adjecency list (for undirected graph)
+            if (!directed) adjList[w].add(v);
             // edge count increment
             E++;
         }
@@ -100,72 +116,33 @@ public class GraphDfsAlgorithm {
     }
 
     /**
-     * Depth first search algorithm to traverse through a Graph
+     * Bipartite detection in a {@link Graph}.
      */
-    private class DepthFirstSearch {
-        // visted marker
-        boolean[] marked;
-        // last vertex on known path
-        int[] edgeTo;
-        // visited count
-        int count;
-        // source
-        int source;
+    private class TwoColors {
+        boolean marked[];
+        boolean colors[];
+        boolean isBipartite;
 
-        public DepthFirstSearch(Graph g, int source) {
-            // instantiate the marker
+        public TwoColors(Graph g) {
             marked = new boolean[g.V];
-            // instantiate last knwon path
-            edgeTo = new int[g.V];
-            // assign source
-            this.source = source;
-            // start traversing
-            dfs(g, source);
+            colors = new boolean[g.V];
+            isBipartite = true;
+            for (int s = 0; s < g.V; s++) if (!marked[s]) dfs(g, s);
         }
 
-        public boolean hasPathTo(int s) {
-            // marker of s, true for visited, otherwise false
-            return marked[s];
-        }
-
-        public int count() {
-            return count;
-        }
-
-        public Bag<Integer> pathTo(int v) {
-            // if v was never visted then obviously no path
-            if (!hasPathTo(v)) return null;
-            // prepare the collection of paths
-            Bag<Integer> path = new Bag<>();
-            // traverse from v the way to source using edgeTo
-            for (int x = v; x != source; x = edgeTo[x]) path.add(x);
-            path.add(source); // finally push source to make it first node in collection
-            // return the Stack
-            return path;
-        }
-
-        public void dfs(Graph g, int v) {
-            // mark v as visted
-            marked[v] = true;
-            // traversing counter increment
-            count++;
-            // start looking for v's adjecency items
-            Bag<Integer> adjList = g.adjList(v);
-            for (Node<Integer> n = adjList.first; n != null; n = n.next) {
+        private void dfs(Graph g, int s) {
+            marked[s] = true;
+            for (Node<Integer> n = g.adjList[s].first; n != null; n = n.next)
                 Integer w = n.item;
-                // if hasn't been visited, start traversing from there
                 if (!marked[w]) {
-                    // mark last known path to v
-                    edgeTo[w] = v;
-                    // recursively search from w
+                    colors[w] = !colors[s];
                     dfs(g, w);
-                }
-            }
+                } else if (colors[w] == colors[s]) isBipartite = false;
         }
     }
 
     public static void main(String[] args) throws Throwable {
-        GraphDfsAlgorithm app = new GraphDfsAlgorithm();
+        GraphTwoColors app = new GraphTwoColors();
         app.start();
     }
 
@@ -177,7 +154,9 @@ public class GraphDfsAlgorithm {
         //                          Algorithm Test                           //
         ///////////////////////////////////////////////////////////////////////
         int T = sc.nextInt();
-        for (int tc = 0; tc < T; tc++) {
+        long totalStart = System.currentTimeMillis();
+        for (int tc = 1; tc <= T; tc++) {
+            long start = System.currentTimeMillis();
 
             int V = sc.nextInt();
             int E = sc.nextInt();
@@ -191,24 +170,12 @@ public class GraphDfsAlgorithm {
                 graph.addEdge(a, b);
             }
 
-            DepthFirstSearch path = new DepthFirstSearch(graph, S);
-            for (int v = 0; v < graph.V; v++) {
-                System.out.print(S + " to " + v + ": ");
-                if (path.hasPathTo(v)) {
-                    Bag<Integer> Bag = path.pathTo(v);
-                    for (Node<Integer> n = Bag.first; n != null; n = n.next) {
-                        Integer i = n.item;
-                        if (i == S) System.out.print(i);
-                        else System.out.print("-" + i);
-                    }
-                }
-                System.out.println();
-            }
-
-            if (path.count != graph.V) System.out.print("NOT ");
-            System.out.println("Connected!");
-            System.out.println();
+            TwoColors twoColors = new TwoColors(graph);
+            System.out.println("#" + tc + " is " + (twoColors.isBipartite ? "" : "NOT ") + "Bipartite");
         }
+        long totalEnd = System.currentTimeMillis();
+        System.out.println();
+        System.out.print("Total : " + (totalEnd - totalStart) + "ms");
         ///////////////////////////////////////////////////////////////////////
     }
 }

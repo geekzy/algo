@@ -190,6 +190,9 @@ public class BasicStucture {
         System.setIn(new FileInputStream("probs/graph/data_1.txt"));
         Scanner sc = new Scanner(System.in);
 
+        ///////////////////////////////////////////////////////////////////////
+        //                          Algorithm Test                           //
+        ///////////////////////////////////////////////////////////////////////
         Stack<Integer> stack = new Stack<>();
         Queue<String> queue = new Queue<>();
         Bag<Clazz> bag = new Bag<>();
@@ -224,5 +227,6 @@ public class BasicStucture {
         for (Clazz item : bag) {
             System.out.println(item);
         }
+        ///////////////////////////////////////////////////////////////////////
     }
 }

@@ -10,7 +10,7 @@ import java.util.Scanner;
  */
 @SuppressWarnings({"unused", "unchecked"})
 public class GraphBfsAlgorithm {
-/**
+    /**
      * Simple Node with generic Type.
      *
      * @param <T> The type of the Node.
@@ -206,9 +206,11 @@ public class GraphBfsAlgorithm {
         System.setIn(new FileInputStream("probs/graph/simple_1.txt"));
         Scanner sc = new Scanner(System.in);
 
+        ///////////////////////////////////////////////////////////////////////
+        //                          Algorithm Test                           //
+        ///////////////////////////////////////////////////////////////////////
         int TC = sc.nextInt();
         for (int tc = 0; tc < TC; tc++) {
-        ///////////////////////////////////////////////////////////////////
 
             int V = sc.nextInt();
             int E = sc.nextInt();
@@ -239,8 +241,8 @@ public class GraphBfsAlgorithm {
             if (path.count != graph.V) System.out.print("NOT ");
             System.out.println("Connected!");
             System.out.println();
-            ///////////////////////////////////////////////////////////////////
         }
+        ///////////////////////////////////////////////////////////////////////
     }
 
     public static void main(String[] args) throws Throwable {
