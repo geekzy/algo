@@ -130,14 +130,15 @@ public class GraphTwoColors {
             for (int s = 0; s < g.V; s++) if (!marked[s]) dfs(g, s);
         }
 
-        private void dfs(Graph g, int s) {
-            marked[s] = true;
-            for (Node<Integer> n = g.adjList[s].first; n != null; n = n.next)
+        private void dfs(Graph g, int v) {
+            marked[v] = true;
+            for (Node<Integer> n = g.adjList[v].first; n != null; n = n.next) {
                 Integer w = n.item;
                 if (!marked[w]) {
-                    colors[w] = !colors[s];
+                    colors[w] = !colors[v];
                     dfs(g, w);
-                } else if (colors[w] == colors[s]) isBipartite = false;
+                } else if (colors[w] == colors[v]) isBipartite = false;
+            }
         }
     }
 
@@ -172,6 +173,18 @@ public class GraphTwoColors {
 
             TwoColors twoColors = new TwoColors(graph);
             System.out.println("#" + tc + " is " + (twoColors.isBipartite ? "" : "NOT ") + "Bipartite");
+            if (twoColors.isBipartite) {
+                Bag<Integer> black = new Bag<>();
+                Bag<Integer> red = new Bag<>();
+                for (int v = 0; v < graph.V; v++)
+                    if (twoColors.colors[v]) red.add(v);
+                    else black.add(v);
+
+                for (Node<Integer> n = black.first; n != null; n = n.next) System.out.print(n.item + " ");
+                System.out.println();
+                for (Node<Integer> n = red.first; n != null; n = n.next) System.out.print(n.item + " ");
+            }
+
         }
         long totalEnd = System.currentTimeMillis();
         System.out.println();

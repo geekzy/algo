@@ -99,6 +99,10 @@ public class StraightForward {
             public Item next() {
                 return a[--i];
             }
+
+            @Override
+            public void remove() {
+            }
         }
     }
 
@@ -150,6 +154,10 @@ public class StraightForward {
             @Override
             public Item next() {
                 return a[x++];
+            }
+
+            @Override
+            public void remove() {
             }
         }
     }

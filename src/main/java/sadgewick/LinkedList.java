@@ -110,6 +110,10 @@ public class LinkedList {
                 node = node.next;
                 return item;
             }
+
+            @Override
+            public void remove() {
+            }
         }
 
         private class Node {
@@ -164,6 +168,10 @@ public class LinkedList {
                 node = node.next;
                 return item;
             }
+
+            @Override
+            public void remove() {
+            }
         }
 
         private class Node {
@@ -206,6 +214,10 @@ public class LinkedList {
                 Item item = node.item;
                 node = node.next;
                 return item;
+            }
+
+            @Override
+            public void remove() {
             }
         }
 

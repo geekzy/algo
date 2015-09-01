@@ -2,84 +2,99 @@ package graph;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.Iterator;
 import java.util.Scanner;
 
 /**
+ * Implementations of basic data structures.
+ *
  * @author Imam Kurniawan (geekzy@gmail.com)
  */
 @SuppressWarnings("unused")
 public class BasicStucture {
+    /**
+     * Simple Node with generic Type.
+     *
+     * @param <T> The type of the Node.
+     */
+    class Node<T> {
+        /**
+         * The value of the type of the node.
+         */
+        T item;
+        /**
+         * The weight of the node.
+         */
+        int weight;
+        /**
+         * Next linked node.
+         */
+        Node<T> next;
+    }
 
-    private class Stack<T> implements Iterable<T> {
-        Node top;
+    /**
+     * Stack data structure implementation.
+     *
+     * @param <T> The type of a single node in the stack.
+     */
+    class Stack<T> {
+        /**
+         * Top node of the stack
+         */
+        Node<T> first;
+        /**
+         * Total nodes in the stack
+         */
         int N;
 
-        public boolean isEmpty() { return top == null; }
+        public boolean isEmpty() {
+            return first == null;
+        }
         public int size() { return N; }
 
         public void push(T item) {
-            Node oldTop = top;
-            top = new Node();
-            top.item = item;
-            top.next = oldTop;
+            Node<T> n = first;
+            first = new Node<>();
+            first.item = item;
+            first.next = n;
             N++;
         }
 
         public T pop() {
-            T item = top.item;
-            top = top.next;
+            T item = first.item;
+            first = first.next;
             N--;
             return item;
         }
-
-        @Override
-        public Iterator<T> iterator() {
-            return new StackIterator();
-        }
-
-        private class StackIterator implements Iterator<T> {
-            Node current = top;
-
-            @Override
-            public boolean hasNext() {
-                return current != null;
-            }
-
-            @Override
-            public T next() {
-                T item = current.item;
-                current = current.next;
-                return item;
-            }
-
-            @Override
-            public void remove() {
-            }
-        }
-
-        private class Node {
-            T item;
-            Node next;
-        }
     }
 
-    private class Queue<T> implements Iterable<T> {
-
-        Node first;
-        Node last;
+    /**
+     * Queue data structure implementation.
+     *
+     * @param <T> The type of a single node in the queue.
+     */
+    class Queue<T> {
+        /**
+         * First node of the queue.
+         */
+        Node<T> first;
+        /**
+         * Last node of the queue.
+         */
+        Node<T> last;
+        /**
+         * Total nodes in queue.
+         */
         int N;
 
         public boolean isEmpty() { return first == null; }
         public int size() { return N; }
 
         public void enqueue(T item) {
-            Node oldLast = last;
-            last = new Node();
+            Node<T> n = last;
+            last = new Node<>();
             last.item = item;
-            last.next = null;
             if (isEmpty()) first = last;
-            else oldLast.next = last;
+            else n.next = last;
             N++;
         }
 
@@ -90,88 +105,46 @@ public class BasicStucture {
             N--;
             return item;
         }
-
-        @Override
-        public Iterator<T> iterator() {
-            return new QueueIterator();
-        }
-
-        private class QueueIterator implements Iterator<T> {
-            Node current = first;
-
-            @Override
-            public boolean hasNext() {
-                return current != null;
-            }
-
-            @Override
-            public T next() {
-                T item = current.item;
-                current = current.next;
-                return item;
-            }
-
-            @Override
-            public void remove() {
-            }
-        }
-
-        private class Node {
-            T item;
-            Node next;
-        }
     }
 
-    private class Bag<T> implements Iterable<T> {
-        Node first;
+    /**
+     * Basic collection data structure, implemeted with stack algorithm.
+     *
+     * @param <T> The type of a single node in the bag.
+     */
+    class Bag<T> {
+        /**
+         * First node of the bag.
+         */
+        Node<T> first;
+        /**
+         * Total nodes in the bag.
+         */
         int N;
 
         public boolean isEmpty() { return first == null; }
         public int size() { return N; }
 
         public void add(T item) {
-            Node oldFirst = first;
-            first = new Node();
+            Node<T> n = first;
+            first = new Node<>();
             first.item = item;
-            first.next = oldFirst;
+            first.next = n;
             N++;
         }
 
-        @Override
-        public Iterator<T> iterator() {
-            return new BagIterator();
-        }
-
-        private class BagIterator implements Iterator<T> {
-            Node current = first;
-
-            @Override
-            public boolean hasNext() {
-                return current != null;
-            }
-
-            @Override
-            public T next() {
-                T item = current.item;
-                current = current.next;
-                return item;
-            }
-
-            @Override
-            public void remove() {
-            }
-        }
-
-        private class Node {
-            T item;
-            Node next;
+        public T get() {
+            T item = first.item;
+            first = first.next;
+            N--;
+            return item;
         }
     }
 
-    private class Clazz {
+    class Clazz {
         final Integer item;
 
-        private Clazz(Integer item) {
+        public Clazz(Integer item) {
             this.item = item;
         }
 
@@ -186,7 +159,7 @@ public class BasicStucture {
         app.start();
     }
 
-    private void start() throws FileNotFoundException {
+    void start() throws FileNotFoundException {
         System.setIn(new FileInputStream("probs/graph/data_1.txt"));
         Scanner sc = new Scanner(System.in);
 
@@ -208,8 +181,8 @@ public class BasicStucture {
         System.out.println("Stack [" + stack.size() + "]:");
         Integer x = stack.pop();
         System.out.println("--> poping: " + x + "; size: " + stack.size());
-        for (Integer item : stack) {
-            System.out.println(item);
+        for (Node<Integer> n = stack.first; n != null; n = n.next) {
+            System.out.println(n.item);
         }
 
         System.out.println();
@@ -217,15 +190,15 @@ public class BasicStucture {
         System.out.println("Queue [" + queue.size() + "]:");
         String y = queue.dequeue();
         System.out.println("--> dequeue: " + y + "; size: " + queue.size());
-        for (String item : queue) {
-            System.out.println(item);
+        for (Node<String> n = queue.first; n != null; n = n.next) {
+            System.out.println(n.item);
         }
 
         System.out.println();
 
         System.out.println("Bag [" + bag.size() + "]:");
-        for (Clazz item : bag) {
-            System.out.println(item);
+        for (Node<Clazz> n = bag.first; n != null; n = n.next) {
+            System.out.println(n.item);
         }
         ///////////////////////////////////////////////////////////////////////
     }
