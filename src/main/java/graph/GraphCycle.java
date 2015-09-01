@@ -55,13 +55,6 @@ public class GraphCycle {
             first.next = old;
             N++;
         }
-
-        public T get() {
-            T item = first.item;
-            first = first.next;
-            N--;
-            return item;
-        }
     }
 
     /**
