@@ -66,17 +66,17 @@ public class GraphTwoColors {
          */
         final int V;
         /**
-         * Indicator of wheather nodes are directed.
-         */
-        final boolean directed;
-        /**
          * Edge count of the Graph
          */
         int E;
         /**
+         * Indicator of wheather nodes are directed.
+         */
+        final boolean directed;
+        /**
          * Adjecency List of the Graph
          */
-        Bag<Integer>[] adjList;
+        final Bag<Integer>[] adjList;
 
         public Graph(int V) {
             this(V, false);
@@ -173,9 +173,12 @@ public class GraphTwoColors {
                     if (twoColors.colors[v]) red.add(v);
                     else black.add(v);
 
+                System.out.print("\t");
                 for (Node<Integer> n = black.first; n != null; n = n.next) System.out.print(n.item + " ");
                 System.out.println();
+                System.out.print("\t");
                 for (Node<Integer> n = red.first; n != null; n = n.next) System.out.print(n.item + " ");
+                System.out.println();
             }
 
         }

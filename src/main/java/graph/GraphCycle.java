@@ -66,17 +66,17 @@ public class GraphCycle {
          */
         final int V;
         /**
-         * Indicator of wheather nodes are directed.
-         */
-        final boolean directed;
-        /**
          * Edge count of the Graph
          */
         int E;
         /**
+         * Indicator of wheather nodes are directed.
+         */
+        final boolean directed;
+        /**
          * Adjecency List of the Graph
          */
-        Bag<Integer>[] adjList;
+        final Bag<Integer>[] adjList;
 
         public Graph(int V) {
             this(V, false);

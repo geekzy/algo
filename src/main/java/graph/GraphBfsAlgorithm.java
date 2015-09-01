@@ -60,7 +60,7 @@ public class GraphBfsAlgorithm {
     /**
      * Queue data structure to support BFS when traversing Graph
      */
-    private class Queue<T> {
+    class Queue<T> {
         Node<T> first;
         Node<T> last;
         int N;
@@ -74,11 +74,11 @@ public class GraphBfsAlgorithm {
         }
 
         public void enqueue(T item) {
-            Node<T> l = last;
+            Node<T> n = last;
             last = new Node<>();
             last.item = item;
             if (isEmpty()) first = last;
-            else last.next = l;
+            else n.next = last;
             N++;
         }
 
@@ -104,14 +104,23 @@ public class GraphBfsAlgorithm {
          */
         int E;
         /**
+         * Indicator of wheather nodes are directed.
+         */
+        final boolean directed;
+        /**
          * Adjecency List of the Graph
          */
-        Bag<Integer>[] adjList;
+        final Bag<Integer>[] adjList;
 
         public Graph(int V) {
+            this(V, false);
+        }
+
+        public Graph(int V, boolean directed) {
             // holds total of vertex and initialize edge count
             this.V = V;
             this.E = 0;
+            this.directed = directed;
             // create array of adjecency list
             adjList = (Bag<Integer>[]) new Bag[V];
             // instantiate each adjecency list in array
@@ -121,8 +130,8 @@ public class GraphBfsAlgorithm {
         public void addEdge(int v, int w) {
             // add w to v's adjecency list
             adjList[v].add(w);
-            // add v to w's adjecency list (since it's undirected graph)
-            adjList[w].add(v);
+            // add v to w's adjecency list (for undirected graph)
+            if (!directed) adjList[w].add(v);
             // edge count increment
             E++;
         }
@@ -136,7 +145,7 @@ public class GraphBfsAlgorithm {
     /**
      * Breadth first search algorithm to traverse through a Graph
      */
-    private class BreadthFirstPath {
+    class BreadthFirstPath {
         // visited marker
         boolean[] marked;
         // last vertex on known path
@@ -157,13 +166,9 @@ public class GraphBfsAlgorithm {
             bfs(g, s);
         }
 
-        public boolean hasPathTo(int v) {
-            return marked[v];
-        }
-
         public Bag<Integer> pathTo(int v) {
             // if v was never visted then obviously no path
-            if (!hasPathTo(v)) return null;
+            if (!marked[v]) return null;
             // prepare the collection of paths
             Bag<Integer> path = new Bag<>();
             // traverse from v the way to source using edgeTo
@@ -202,7 +207,12 @@ public class GraphBfsAlgorithm {
         }
     }
 
-    public void start() throws Throwable {
+    public static void main(String[] args) throws Throwable {
+        GraphBfsAlgorithm app = new GraphBfsAlgorithm();
+        app.start();
+    }
+
+    void start() throws Throwable {
         System.setIn(new FileInputStream("probs/graph/simple_1.txt"));
         Scanner sc = new Scanner(System.in);
 
@@ -227,7 +237,7 @@ public class GraphBfsAlgorithm {
             BreadthFirstPath path = new BreadthFirstPath(graph, S);
             for (int v = 0; v < graph.V; v++) {
                 System.out.print(S + " to " + v + ": ");
-                if (path.hasPathTo(v)) {
+                if (path.marked[v]) {
                     Bag<Integer> Bag = path.pathTo(v);
                     for (Node<Integer> n = Bag.first; n != null; n = n.next) {
                         Integer i = n.item;
@@ -243,10 +253,5 @@ public class GraphBfsAlgorithm {
             System.out.println();
         }
         ///////////////////////////////////////////////////////////////////////
-    }
-
-    public static void main(String[] args) throws Throwable {
-        GraphBfsAlgorithm app = new GraphBfsAlgorithm();
-        app.start();
     }
 }

@@ -49,10 +49,10 @@ public class GraphDfsAlgorithm {
         }
 
         public void add(T item) {
-            Node<T> old = first;
+            Node<T> n = first;
             first = new Node<>();
             first.item = item;
-            first.next = old;
+            first.next = n;
             N++;
         }
     }
@@ -70,14 +70,23 @@ public class GraphDfsAlgorithm {
          */
         int E;
         /**
+         * Indicator of wheather nodes are directed.
+         */
+        final boolean directed;
+        /**
          * Adjecency List of the Graph
          */
-        Bag<Integer>[] adjList;
+        final Bag<Integer>[] adjList;
 
         public Graph(int V) {
+            this(V, false);
+        }
+
+        public Graph(int V, boolean directed) {
             // holds total of vertex and initialize edge count
             this.V = V;
             this.E = 0;
+            this.directed = directed;
             // create array of adjecency list
             adjList = (Bag<Integer>[]) new Bag[V];
             // instantiate each adjecency list in array
@@ -87,8 +96,8 @@ public class GraphDfsAlgorithm {
         public void addEdge(int v, int w) {
             // add w to v's adjecency list
             adjList[v].add(w);
-            // add v to w's adjecency list (since it's undirected graph)
-            adjList[w].add(v);
+            // add v to w's adjecency list (for undirected graph)
+            if (!directed) adjList[w].add(v);
             // edge count increment
             E++;
         }
@@ -102,7 +111,7 @@ public class GraphDfsAlgorithm {
     /**
      * Depth first search algorithm to traverse through a Graph
      */
-    private class DepthFirstSearch {
+    class DepthFirstSearch {
         // visted marker
         boolean[] marked;
         // last vertex on known path
@@ -123,23 +132,14 @@ public class GraphDfsAlgorithm {
             dfs(g, source);
         }
 
-        public boolean hasPathTo(int s) {
-            // marker of s, true for visited, otherwise false
-            return marked[s];
-        }
-
-        public int count() {
-            return count;
-        }
-
         public Bag<Integer> pathTo(int v) {
-            // if v was never visted then obviously no path
-            if (!hasPathTo(v)) return null;
+            // if v was never visted then obviously no path connected to v
+            if (!marked[v]) return null;
             // prepare the collection of paths
             Bag<Integer> path = new Bag<>();
-            // traverse from v the way to source using edgeTo
+            // traverse from v way to the source using edgeTo
             for (int x = v; x != source; x = edgeTo[x]) path.add(x);
-            path.add(source); // finally push source to make it first node in collection
+            path.add(source); // finally add source to make it first node in collection
             // return the Stack
             return path;
         }
@@ -169,7 +169,7 @@ public class GraphDfsAlgorithm {
         app.start();
     }
 
-    private void start() throws Throwable {
+    void start() throws Throwable {
         System.setIn(new FileInputStream("probs/graph/simple_1.txt"));
         Scanner sc = new Scanner(System.in);
 
@@ -194,7 +194,7 @@ public class GraphDfsAlgorithm {
             DepthFirstSearch path = new DepthFirstSearch(graph, S);
             for (int v = 0; v < graph.V; v++) {
                 System.out.print(S + " to " + v + ": ");
-                if (path.hasPathTo(v)) {
+                if (path.marked[v]) {
                     Bag<Integer> Bag = path.pathTo(v);
                     for (Node<Integer> n = Bag.first; n != null; n = n.next) {
                         Integer i = n.item;
