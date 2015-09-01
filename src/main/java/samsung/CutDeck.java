@@ -5,17 +5,16 @@ in order to receive a score properly.
 Do not use file input and output. Please be very careful.
 
 */
-package sotong;
+package samsung;
 
-import java.util.Scanner;
 import java.io.FileInputStream;
-import java.util.Arrays;
+import java.util.Scanner;
 
 /*
    As the name of the class should be Algorithm , using Algorithm.java as the filename is recommended.
    In any case, you can execute your program by running 'java Algorithm' command.
  */
-class TaroFriend {
+class CutDeck {
 
     static int Answer;
 
@@ -31,30 +30,43 @@ class TaroFriend {
         /*
            Make new scanner from standard input System.in, and read data.
          */
-        Scanner sc = new Scanner(new FileInputStream("probs/Problem_20140421/sample_input_2.txt"));
+        Scanner sc = new Scanner(new FileInputStream("probs/Problem_20141013/sample_input_2.txt"));
 
         int T = sc.nextInt();sc.nextLine();
         for(int test_case = 0; test_case < T; test_case++) {
 
-            String line = sc.nextLine();
-            String[] currCoords = line.trim().split(" ");
-
-            int movements = sc.nextInt(); sc.nextLine();
+            String line = sc.nextLine().trim();
             /////////////////////////////////////////////////////////////////////////////////////////////
-            int[] coords = new int[currCoords.length];
-            for (int i = 0; i < currCoords.length; i++) {
-                int plus = 0, min = 0;
-                if (movements > 0) {
-                    plus = Integer.parseInt(currCoords[i]) + movements;
-                    min = Integer.parseInt(currCoords[i]) - movements;
+            int count = 0; int x = 0; int[] idx = new int[line.length()]; int[] max = new int[line.length()];
+            Answer = 0; // reset each case
+            for (int i = 0; i < line.length(); i++) {
+                char card = line.charAt(i);
+
+                // mark first occurance
+                if (card == 'B' && count == 0) {
+                    idx[x] = i;
+                    count++;
                 }
-                int x = 0-plus < 0 ? (0-plus)*-1 : 0-plus;
-                int y = 0-min < 0 ? (0-min)*-1 : 0-min;
-                if (x < y) coords[i] = plus;
-                else coords[i] = min;
+                // increse count
+                else if (card == 'B') {
+                    count++;
+                }
+                // record max and reset on R
+                else if (card == 'R' && count > 0) {
+                    max[x++] = count;
+                    count = 0;
+                } // just skip on another R
+                //System.out.print(String.format("[%c]count:%d|x:%d#", card, count, x));
             }
-            Arrays.sort(coords);
-            Answer = coords[coords.length-1] - coords[0];
+
+            int biggest = 0; int candidate = 0;
+            for (int j = 0; j < max.length; j++) {
+                if (max[j] > biggest) {
+                    candidate = j;
+                    biggest = max[j];
+                }
+            }
+            Answer = idx[candidate];
             /////////////////////////////////////////////////////////////////////////////////////////////
 
             // Print the answer to standard output(screen).

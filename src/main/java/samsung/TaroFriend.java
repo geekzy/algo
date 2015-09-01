@@ -5,19 +5,19 @@ in order to receive a score properly.
 Do not use file input and output. Please be very careful.
 
 */
-package sotong;
+package samsung;
 
-import java.util.Scanner;
 import java.io.FileInputStream;
 import java.util.Arrays;
+import java.util.Scanner;
 
 /*
    As the name of the class should be Algorithm , using Algorithm.java as the filename is recommended.
    In any case, you can execute your program by running 'java Algorithm' command.
  */
-class TaroString {
+class TaroFriend {
 
-    static boolean Answer;
+    static int Answer;
 
     public static void main(String args[]) throws Exception {
         /*
@@ -31,37 +31,34 @@ class TaroString {
         /*
            Make new scanner from standard input System.in, and read data.
          */
-        Scanner sc = new Scanner(new FileInputStream("probs/Problem_20140421/sample_input_1.txt"));
+        Scanner sc = new Scanner(new FileInputStream("probs/Problem_20140421/sample_input_2.txt"));
 
         int T = sc.nextInt();sc.nextLine();
-        System.out.println("Total test cases: " + T);
         for(int test_case = 0; test_case < T; test_case++) {
 
             String line = sc.nextLine();
-            System.out.print("Checking on [" + line + "]: ");
+            String[] currCoords = line.trim().split(" ");
+
+            int movements = sc.nextInt(); sc.nextLine();
             /////////////////////////////////////////////////////////////////////////////////////////////
-            Answer = checkTaroShort(line);
+            int[] coords = new int[currCoords.length];
+            for (int i = 0; i < currCoords.length; i++) {
+                int plus = 0, min = 0;
+                if (movements > 0) {
+                    plus = Integer.parseInt(currCoords[i]) + movements;
+                    min = Integer.parseInt(currCoords[i]) - movements;
+                }
+                int x = 0-plus < 0 ? (0-plus)*-1 : 0-plus;
+                int y = 0-min < 0 ? (0-min)*-1 : 0-min;
+                if (x < y) coords[i] = plus;
+                else coords[i] = min;
+            }
+            Arrays.sort(coords);
+            Answer = coords[coords.length-1] - coords[0];
             /////////////////////////////////////////////////////////////////////////////////////////////
 
             // Print the answer to standard output(screen).
-            System.out.println(Answer ? "Possible" : "Impossible");
+            System.out.println(Answer);
         }
-    }
-
-    public static boolean checkTaroShort(String line) {
-        return line.matches("[A-Z]*C[^A&&[A-Z]]+A[^T&&[A-Z]]+T[A-Z]*");
-    }
-
-    public static boolean checkTaroLong(String line) {
-        int cIdx = 0, aIdx = 0, tIdx = 0;
-        for (int i = 0; i < line.length(); i++) {
-            char now = line.charAt(i);
-
-            if (now == 'C') { cIdx = i; }
-            if (now == 'A') { aIdx = i; }
-            if (now == 'T') { tIdx = i; }
-        }
-
-        return (aIdx - cIdx) > 1 && (tIdx - aIdx) > 1 && tIdx > cIdx && tIdx > aIdx;
     }
 }

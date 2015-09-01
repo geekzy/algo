@@ -5,12 +5,12 @@ in order to receive a score properly.
 Do not use file input and output. Please be very careful.
 
 */
-package sotong;
+package samsung;
 
-import java.util.Scanner;
 import java.io.FileInputStream;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 /*
    As the name of the class should be Algorithm , using Algorithm.java as the filename is recommended.
