@@ -111,7 +111,7 @@ public class GraphTwoColors {
     /**
      * Bipartite detection in a {@link Graph}.
      */
-    private class TwoColors {
+    class TwoColors {
         boolean marked[];
         boolean colors[];
         boolean isBipartite;
@@ -140,7 +140,7 @@ public class GraphTwoColors {
         app.start();
     }
 
-    private void start() throws Throwable {
+    void start() throws Throwable {
         System.setIn(new FileInputStream("probs/graph/simple_1.txt"));
         Scanner sc = new Scanner(System.in);
 

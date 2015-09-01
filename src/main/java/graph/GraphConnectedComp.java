@@ -9,7 +9,7 @@ import java.util.Scanner;
  * @author Imam Kurniawan (geekzy@gmail.com)
  */
 @SuppressWarnings({"unused", "unchecked"})
-public class GraphCycle {
+public class GraphConnectedComp {
 
     /**
      * Simple Node with generic Type.
@@ -109,31 +109,36 @@ public class GraphCycle {
     }
 
     /**
-     * Cycle detection in a {@link Graph}.
+     * Connected components detection in a {@link Graph}.
      */
-    class Cycle {
+    private class ConnectedComp {
         boolean[] marked;
-        boolean hasCycle;
+        int[] id;
+        int count;
 
-        public Cycle(Graph g) {
+        public ConnectedComp(Graph g) {
             marked = new boolean[g.V];
-            for (int s = 0; s < g.V; s++) if (!marked[s]) dfs(g, s, s);
+            id = new int[g.V];
+
+            for (int s = 0; s < g.V; s++)
+                if (!marked[s]) {
+                    dfs(g, s);
+                    count++;
+                }
         }
 
-        private void dfs(Graph g, int s, int t) {
-            marked[s] = true;
-            for (Node<Integer> n = g.adjList[s].first; n != null; n = n.next) {
-                Integer v = n.item;
-                if (!marked[v]) dfs(g, v, s);
-                else if (s != t) {
-                    hasCycle = true;
-                }
+        private void dfs(Graph g, int v) {
+            marked[v] = true;
+            id[v] = count;
+            for (Node<Integer> n = g.adjList[v].first; n != null; n = n.next) {
+                Integer w = n.item;
+                if (!marked[w]) dfs(g, w);
             }
         }
     }
 
     public static void main(String[] args) throws Throwable {
-        GraphCycle app = new GraphCycle();
+        GraphConnectedComp app = new GraphConnectedComp();
         app.start();
     }
 
@@ -153,7 +158,7 @@ public class GraphCycle {
             int E = sc.nextInt();
             int S = sc.nextInt();
 
-            Graph graph = new Graph(V, true);
+            Graph graph = new Graph(V);
             for (int e = 0; e < E; e++) {
                 int a = sc.nextInt();
                 int b = sc.nextInt();
@@ -161,10 +166,21 @@ public class GraphCycle {
                 graph.addEdge(a, b);
             }
 
-            Cycle cycle = new Cycle(graph);
-            System.out.print("#" + tc + " " + (cycle.hasCycle ? "Has" : "No") + " Cycle(s)");
-            long end = System.currentTimeMillis();
-            System.out.println(" => " + (end - start ) + "ms");
+            ConnectedComp cc = new ConnectedComp(graph);
+            int M = cc.count;
+            System.out.println("#" + tc + " connected components: " + M);
+
+            Bag<Integer>[] comps = (Bag<Integer>[]) new Bag[M];
+            for (int m = 0; m < M; m++) comps[m] = new Bag<>();
+            for (int v = 0; v < graph.V; v++) comps[cc.id[v]].add(v);
+
+            for (int m = 0; m < M; m++) {
+                System.out.print("\t> " + (m + 1) + " ");
+                for (Node<Integer> n = comps[m].first; n != null; n = n.next)
+                    System.out.print(n.item + " ");
+                System.out.println();
+            }
+
         }
         long totalEnd = System.currentTimeMillis();
         System.out.println();
