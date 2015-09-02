@@ -101,11 +101,6 @@ public class GraphDfsAlgorithm {
             // edge count increment
             E++;
         }
-
-        public Bag<Integer> adjList(int v) {
-            // adjecency list of v
-            return adjList[v];
-        }
     }
 
     /**
@@ -150,7 +145,7 @@ public class GraphDfsAlgorithm {
             // traversing counter increment
             count++;
             // start looking for v's adjecency items
-            Bag<Integer> adjList = g.adjList(v);
+            Bag<Integer> adjList = g.adjList[v];
             for (Node<Integer> n = adjList.first; n != null; n = n.next) {
                 Integer w = n.item;
                 // if hasn't been visited, start traversing from there

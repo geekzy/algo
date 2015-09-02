@@ -9,7 +9,7 @@ import java.util.Scanner;
  *
  * @author Imam Kurniawan (geekzy@gmail.com)
  */
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "unchecked"})
 public class BasicStucture {
     /**
      * Simple Node with generic Type.
@@ -65,6 +65,12 @@ public class BasicStucture {
             N--;
             return item;
         }
+
+        public int weightOf(T item) {
+            for (Node<T> n = first; n != null; n = n.next)
+                if (n.item == item) return n.weight;
+            return 0;
+        }
     }
 
     /**
@@ -90,20 +96,40 @@ public class BasicStucture {
         public int size() { return N; }
 
         public void enqueue(T item) {
+            enqueue(item, 0);
+        }
+
+        public void enqueue(T item, int weight) {
+            // backup first node
             Node<T> n = last;
+            // create new node
             last = new Node<>();
+            // assign values
             last.item = item;
+            last.weight = weight;
+            // set next or first should equals last
             if (isEmpty()) first = last;
             else n.next = last;
+            // increase counter
             N++;
         }
 
         public T dequeue() {
+            // extract item
             T item = first.item;
+            // set to next pointer
             first = first.next;
+            // reset last
             if (isEmpty()) last = null;
+            // decrease counter
             N--;
             return item;
+        }
+
+        public int weightOf(T item) {
+            for (Node<T> n = first; n != null; n = n.next)
+                if (n.item == item) return n.weight;
+            return 0;
         }
     }
 
@@ -126,18 +152,86 @@ public class BasicStucture {
         public int size() { return N; }
 
         public void add(T item) {
+            add(item, 0); // add with default of 0 weight
+        }
+
+        public void add(T item, int weight) {
+            // backup first node
             Node<T> n = first;
+            // create new node
             first = new Node<>();
+            // assign values
             first.item = item;
+            first.weight = weight;
             first.next = n;
+            // increase counter
             N++;
         }
 
-        public T get() {
-            T item = first.item;
-            first = first.next;
-            N--;
-            return item;
+        public int weightOf(T item) {
+            for (Node<T> n = first; n != null; n = n.next)
+                if (n.item == item) return n.weight;
+            return 0;
+        }
+    }
+
+    /**
+     * Graph represention
+     */
+    class Graph {
+        /**
+         * Vertex of the Graph
+         */
+        final int V;
+        /**
+         * Edge count of the Graph
+         */
+        int E;
+        /**
+         * Indicator of wheather nodes are directed.
+         */
+        final boolean digraph;
+        /**
+         * Adjecency List of the Graph
+         */
+        final Bag<Integer>[] adjList;
+
+        public Graph(int V) {
+            this(V, false);
+        }
+
+        public Graph(int V, boolean digraph) {
+            // holds total of vertex and initialize edge count
+            this.V = V;
+            this.E = 0;
+            this.digraph = digraph;
+            // create array of adjecency list
+            adjList = (Bag<Integer>[]) new Bag[V];
+            // instantiate each adjecency list in array
+            for (int v = 0; v < V; v++) adjList[v] = new Bag<>();
+        }
+
+        public void addEdge(int v, int w) {
+            // add w to v's adjecency list
+            adjList[v].add(w);
+            // add v to w's adjecency list (for undirected graph)
+            if (!digraph) adjList[w].add(v);
+            // edge count increment
+            E++;
+        }
+
+        public Graph reverse() {
+            // can only be applied to directed graph
+            if (!digraph) return null;
+            // new copy of a graph with the same total of vertices
+            Graph g = new Graph(V);
+            // loop through all vertices and its adjecencies
+            for (int v = 0; v < V; v++) {
+                for (Node<Integer> n = adjList[v].first; n != null; n = n.next)
+                    // add edge with reversing order to new graph
+                    g.addEdge(n.item, v);
+            }
+            return g;
         }
     }
 

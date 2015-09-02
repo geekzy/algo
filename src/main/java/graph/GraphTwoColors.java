@@ -101,11 +101,6 @@ public class GraphTwoColors {
             // edge count increment
             E++;
         }
-
-        public Bag<Integer> adjList(int v) {
-            // adjecency list of v
-            return adjList[v];
-        }
     }
 
     /**
