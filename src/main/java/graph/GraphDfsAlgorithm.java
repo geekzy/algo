@@ -72,7 +72,7 @@ public class GraphDfsAlgorithm {
         /**
          * Indicator of wheather nodes are directed.
          */
-        final boolean directed;
+        final boolean digraph;
         /**
          * Adjecency List of the Graph
          */
@@ -82,11 +82,11 @@ public class GraphDfsAlgorithm {
             this(V, false);
         }
 
-        public Graph(int V, boolean directed) {
+        public Graph(int V, boolean digraph) {
             // holds total of vertex and initialize edge count
             this.V = V;
             this.E = 0;
-            this.directed = directed;
+            this.digraph = digraph;
             // create array of adjecency list
             adjList = (Bag<Integer>[]) new Bag[V];
             // instantiate each adjecency list in array
@@ -97,9 +97,23 @@ public class GraphDfsAlgorithm {
             // add w to v's adjecency list
             adjList[v].add(w);
             // add v to w's adjecency list (for undirected graph)
-            if (!directed) adjList[w].add(v);
+            if (!digraph) adjList[w].add(v);
             // edge count increment
             E++;
+        }
+
+        public Graph reverse() {
+            // can only be applied to directed graph
+            if (!digraph) return null;
+            // new copy of a graph with the same total of vertices
+            Graph g = new Graph(V);
+            // loop through all vertices and its adjecencies
+            for (int v = 0; v < V; v++) {
+                for (Node<Integer> n = adjList[v].first; n != null; n = n.next)
+                    // add edge with reversing order to new graph
+                    g.addEdge(n.item, v);
+            }
+            return g;
         }
     }
 
@@ -116,18 +130,39 @@ public class GraphDfsAlgorithm {
         // source
         int source;
 
-        public DepthFirstSearch(Graph g, int source) {
+        public DepthFirstSearch(Graph g) {
             // instantiate the marker
             marked = new boolean[g.V];
             // instantiate last knwon path
             edgeTo = new int[g.V];
+        }
+
+        public DepthFirstSearch(Graph g, int source) {
+            // instantiate marked & edgeTo
+            this(g);
             // assign source
             this.source = source;
             // start traversing
             dfs(g, source);
         }
 
+        public DepthFirstSearch(Graph g, Bag<Integer> sources) {
+            // instantiate marked & edgeTo
+            this(g);
+            // check all sources
+            for (Node<Integer> n = sources.first; n != null; n = n.next) {
+                Integer s = n.item;
+                if (!marked[s]) dfs(g, s);
+            }
+        }
+
         public Bag<Integer> pathTo(int v) {
+            return pathTo(v, null);
+        }
+
+        public Bag<Integer> pathTo(int v, Integer s) {
+            // define s
+            if (s != null) source = s;
             // if v was never visted then obviously no path connected to v
             if (!marked[v]) return null;
             // prepare the collection of paths
@@ -165,7 +200,8 @@ public class GraphDfsAlgorithm {
     }
 
     void start() throws Throwable {
-        System.setIn(new FileInputStream("probs/graph/simple_1.txt"));
+        //System.setIn(new FileInputStream("probs/graph/simple_1.txt"));
+        System.setIn(new FileInputStream("probs/graph/tinyDG.txt"));
         Scanner sc = new Scanner(System.in);
 
         ///////////////////////////////////////////////////////////////////////
@@ -178,7 +214,7 @@ public class GraphDfsAlgorithm {
             int E = sc.nextInt();
             int S = sc.nextInt();
 
-            Graph graph = new Graph(V);
+            Graph graph = new Graph(V, false);
             for (int e = 0; e < E; e++) {
                 int a = sc.nextInt();
                 int b = sc.nextInt();
