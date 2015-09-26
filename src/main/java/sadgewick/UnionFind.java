@@ -38,22 +38,54 @@ public class UnionFind {
         }
     }
 
+    class QuickUnionUF {
+        int[] id;
+
+        public QuickUnionUF(int N) {
+            id = new int[N];
+            for (int n = 0; n < N; n++) id[n] = n;
+        }
+
+        int root(int x) {
+            while(x != id[x]) x = id[x];
+            return x;
+        }
+
+        boolean connected(int p, int q) {
+            return root(p) == root(q);
+        }
+
+        void union(int p, int q) {
+            int idP = root(p);
+            int idQ = root(q);
+            id[idQ] = idP;
+
+            System.out.print("id[ ");
+            for (int i = 0; i < id.length; i++) {
+                System.out.print(id[i] + " ");
+            }
+            System.out.print("]");
+        }
+    }
+
     void start() throws Throwable {
         System.setIn(new FileInputStream("probs/sadgewick/tinyUF.txt"));
         Scanner sc = new Scanner(System.in);
 
         long start = System.currentTimeMillis();
         int N = sc.nextInt();
-        QuickFindUF quf = new QuickFindUF(N);
+        //QuickFindUF qf = new QuickFindUF(N);
+        QuickUnionUF qu = new QuickUnionUF(N);
         for (int n = 0; n < N; n++) {
             int p = sc.nextInt();
             int q = sc.nextInt();
 
             System.out.print(p + " -> " + q + " ");
-            quf.union(p, q);
+            //qf.union(p, q);
+            qu.union(p, q);
             System.out.println();
         }
-        System.out.println("Components: " + quf.count);
+        //System.out.println("Components: " + qf.count);
         System.out.println("took " + (System.currentTimeMillis() - start) + "ms");
     }
 
