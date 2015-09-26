@@ -1,7 +1,6 @@
 package graph;
 
 import java.io.FileInputStream;
-import java.util.Random;
 import java.util.Scanner;
 
 /**
@@ -71,8 +70,10 @@ public class GraphDirectedDfs {
     class DepthFirstPath {
         boolean[] marked;
         int[] edge;
+        int s;
 
         public DepthFirstPath(Graph g, int s) {
+            this.s = s;
             marked = new boolean[g.V];
             edge = new int[g.V];
 
@@ -93,11 +94,49 @@ public class GraphDirectedDfs {
         public Stack pathTo(int v) {
             if (!marked[v]) return null;
             Stack pathTo = new Stack();
-            for (int x = edge[v]; x != v; x = edge[x]) {
+            for (int x = v; x != s; x = edge[x]) {
                 pathTo.push(x);
             }
-            pathTo.push(v);
+            pathTo.push(s);
             return pathTo;
+        }
+    }
+
+    class Cycle {
+        boolean[] marked;
+        boolean[] onStack;
+        int[] edgeTo;
+        Stack cycles;
+
+        public Cycle(Graph g) {
+            marked = new boolean[g.V];
+            onStack = new boolean[g.V];
+            edgeTo = new int[g.V];
+
+            for (int v = 0; v < g.V; v++) {
+                if (!marked[v] && cycles == null) dfs(g, v);
+            }
+        }
+
+        public void dfs(Graph g, int v) {
+            marked[v] = true;
+            onStack[v] = true;
+            for (Node n = g.adjList[v].first; n != null; n = n.next) {
+                int w = n.item;
+                if (cycles != null) return;
+                else if (!marked[v]) {
+                    edgeTo[w] = v;
+                    dfs(g, w);
+                }
+                else if (onStack[w]) {
+                    // record cycle into stack
+                    cycles = new Stack();
+                    for (int x = v; x != w; x = edgeTo[x])
+                        cycles.push(x);
+                    cycles.push(w);
+                    cycles.push(v);
+                }
+            }
         }
     }
 
@@ -108,6 +147,8 @@ public class GraphDirectedDfs {
         int V = sc.nextInt();
         int E = sc.nextInt();
 
+        long start = System.currentTimeMillis();
+
         Graph graph = new Graph(V);
         for (int e = 0; e < E; e++) {
             int v = sc.nextInt();
@@ -116,13 +157,21 @@ public class GraphDirectedDfs {
             graph.addEdge(v, w);
         }
 
-        int S = new Random().nextInt(V);
-        DepthFirstPath dfs = new DepthFirstPath(graph, 0);
-        Stack pathTo = dfs.pathTo(S);
+        int S = 6;
+        int T = 1;
+        DepthFirstPath dfs = new DepthFirstPath(graph, S);
+        Stack pathTo = dfs.pathTo(T);
 
-        System.out.println("Path to " + S + " are:");
-        while (!pathTo.empty()) System.out.print(pathTo.pop() + " ");
+        if (pathTo != null) {
+            System.out.println("Path to " + S + " are:");
+            while (!pathTo.empty()) System.out.print(pathTo.pop() + " ");
+            System.out.println();
+        }
+        else System.out.println(String.format("No path from %d to %d", S, T));
+
+        long end = System.currentTimeMillis();
         System.out.println();
+        System.out.println("Running in " + (end - start) + "ms");
     }
 
     public static void main(String[] args) throws Throwable {
