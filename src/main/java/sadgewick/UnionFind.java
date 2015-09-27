@@ -58,13 +58,8 @@ public class UnionFind {
         void union(int p, int q) {
             int idP = root(p);
             int idQ = root(q);
-            id[idQ] = idP;
-
-            System.out.print("id[ ");
-            for (int i = 0; i < id.length; i++) {
-                System.out.print(id[i] + " ");
-            }
-            System.out.print("]");
+            // root of q is the root of p
+            id[idP] = idQ;
         }
     }
 
@@ -86,6 +81,8 @@ public class UnionFind {
             System.out.println();
         }
         //System.out.println("Components: " + qf.count);
+        System.out.println("6 -> 1 :" + (qu.connected(6, 1) ? "" : " NOT") + " Connected!");
+        System.out.println("9 -> 0 :" + (qu.connected(9, 0) ? "" : " NOT") + " Connected!");
         System.out.println("took " + (System.currentTimeMillis() - start) + "ms");
     }
 
