@@ -11,8 +11,8 @@ import java.io.FileInputStream;
 public class UnionFind {
 
     class QuickFindUF {
-        int[] id;
-        int count;
+        int[] id;  // elements
+        int count; // total connected counter
 
         public QuickFindUF(int N) {
             id = new int[N];
@@ -39,10 +39,12 @@ public class UnionFind {
     }
 
     class QuickUnionUF {
-        int[] id;
+        int[] id; // elements
+        int[] tz; // root weight
 
         public QuickUnionUF(int N) {
             id = new int[N];
+            tz = new int[N];
             for (int n = 0; n < N; n++) id[n] = n;
         }
 
@@ -52,14 +54,19 @@ public class UnionFind {
         }
 
         boolean connected(int p, int q) {
+            // true when has the same root
             return root(p) == root(q);
         }
 
         void union(int p, int q) {
             int idP = root(p);
             int idQ = root(q);
-            // root of q is the root of p
-            id[idP] = idQ;
+            // skip when already connected
+            if (idP == idQ) return;
+            // root of p has smaller tree size than root of q so root of p is rooting to the root of q
+            if (tz[idP] < tz[idQ]) { id[idP] = idQ; tz[idQ] += tz[idP]; }
+            // root of p has larger or equal tree size than root of q so root of q is rooting to the root of p
+            else { id[idQ] = idP; tz[idP] += tz[idQ]; }
         }
     }
 
@@ -81,8 +88,9 @@ public class UnionFind {
             System.out.println();
         }
         //System.out.println("Components: " + qf.count);
-        System.out.println("6 -> 1 :" + (qu.connected(6, 1) ? "" : " NOT") + " Connected!");
-        System.out.println("9 -> 0 :" + (qu.connected(9, 0) ? "" : " NOT") + " Connected!");
+        System.out.println("8 -> 9 :" + (qu.connected(8, 9) ? "" : " NOT") + " Connected!");
+        System.out.println("1 -> 0 :" + (qu.connected(1, 0) ? "" : " NOT") + " Connected!");
+        System.out.println("5 -> 3 :" + (qu.connected(5, 3) ? "" : " NOT") + " Connected!");
         System.out.println("took " + (System.currentTimeMillis() - start) + "ms");
     }
 
