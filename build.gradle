@@ -22,7 +22,8 @@ test {
 }
 
 task execute(type: JavaExec) {
-    main = 'sadgewick.UnionFind'
+    main = 'hackerrank.AngryProfessor'
+    //main = 'sadgewick.UnionFind'
     //main = 'graph.GraphTwoColors'
     //main = 'graph.GraphCycle'
     //main = 'graph.GraphDfsAlgorithm'
