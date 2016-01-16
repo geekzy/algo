@@ -22,7 +22,9 @@ test {
 }
 
 task execute(type: JavaExec) {
-    main = 'hackerrank.AngryProfessor'
+    main = 'hackerrank.MergeLinkedList'
+    //main = 'hackerrank.TwoLinkedList'
+    //main = 'hackerrank.AngryProfessor'
     //main = 'sadgewick.UnionFind'
     //main = 'graph.GraphTwoColors'
     //main = 'graph.GraphCycle'
