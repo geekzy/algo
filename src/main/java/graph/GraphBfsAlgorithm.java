@@ -8,7 +8,7 @@ import java.util.Scanner;
  *
  * @author Imam Kurniawan (geekzy@gmail.com)
  */
-@SuppressWarnings({"unused", "unchecked"})
+@SuppressWarnings({"unchecked"})
 public class GraphBfsAlgorithm {
     /**
      * Simple Node with generic Type.
@@ -248,5 +248,6 @@ public class GraphBfsAlgorithm {
             System.out.println();
         }
         ///////////////////////////////////////////////////////////////////////
+        sc.close();
     }
 }
