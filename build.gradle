@@ -22,7 +22,8 @@ test {
 }
 
 task execute(type: JavaExec) {
-    main = 'hackerrank.MergeLinkedList'
+    main = 'abb.Fibonacci'
+    //main = 'hackerrank.MergeLinkedList'
     //main = 'hackerrank.TwoLinkedList'
     //main = 'hackerrank.AngryProfessor'
     //main = 'sadgewick.UnionFind'

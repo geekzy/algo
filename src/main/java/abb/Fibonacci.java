@@ -4,8 +4,8 @@ public class Fibonacci {
 	public static void main(String args[]) {
 		Fibonacci app = new Fibonacci();
 		long start = System.currentTimeMillis();
-		String result = app.generateFib(45); // 45 sequence in 12316ms
-		//String result = app.dumbFib(10000); // 10000 sequence in 1721ms
+		//String result = app.generateFib(45); // 45 sequence in 12316ms
+		String result = app.fasterFib(10000); // 10000 sequence in 1721ms
 		long end = System.currentTimeMillis();
 		System.out.println(result + "\n\t->[" + (end - start) + "ms]");
 	}
@@ -23,7 +23,7 @@ public class Fibonacci {
 		return fib(n-1) + fib(n-2);
 	}
 	
-	private String dumbFib(int count) {
+	private String fasterFib(int count) {
 		long[] f = new long[count];
 		// 1, 1, 2, 3, 5, 8, 13, 21
 		long fib = 1;
