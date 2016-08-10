@@ -9,7 +9,7 @@ import java.util.Scanner;
  *
  * @author Imam Kurniawan (geekzy@gmail.com)
  */
-@SuppressWarnings({"unused", "unchecked"})
+@SuppressWarnings({"unchecked"})
 public class BasicStucture {
     /**
      * Simple Node with generic Type.
@@ -295,5 +295,6 @@ public class BasicStucture {
             System.out.println(n.item);
         }
         ///////////////////////////////////////////////////////////////////////
+        sc.close();
     }
 }

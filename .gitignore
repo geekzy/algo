@@ -9,3 +9,4 @@ project.properties
 .~lock*
 algo.iml
 .DS_Store
+/bin/
