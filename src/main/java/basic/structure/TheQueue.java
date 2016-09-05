@@ -46,28 +46,29 @@ public class TheQueue {
         Node<T> last;
         int n;
 
-        public boolean isEmpty() {
+        boolean isEmpty() {
             return first == null;
         }
 
-        public int size() {
+        int size() {
             return n;
         }
 
         void enqueue(T item) {
-            Node<T> l = last;
+            Node<T> node = last;
             last = new Node<>();
             last.item = item;
             if (isEmpty()) first = last;
-            else l.next = last;
-            n = n + 1;
+            else node.next = last;
+            n += 1;
         }
 
         T dequeue() {
-            Node<T> f = first;
-            first = f.next;
-            n = n - 1;
-            return f.item;
+            Node<T> node = first;
+            first = node.next;
+            if (isEmpty()) last = null;
+            n -= 1;
+            return node.item;
         }
     }
 }

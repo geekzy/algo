@@ -54,18 +54,18 @@ public class TheStack {
         }
 
         void push(T item) {
-            Node<T> nItem = new Node<>();
-            nItem.item = item;
-            if (!isEmpty()) nItem.next = first;
-            first = nItem;
-            n = n + 1;
+            Node<T> node = new Node<>();
+            node.item = item;
+            node.next = first;
+            first = node;
+            n += 1;
         }
 
         T pop() {
-            Node<T> pItem = first;
-            first = pItem.next;
-            n = n - 1;
-            return pItem.item;
+            Node<T> node = first;
+            first = node.next;
+            n -= 1;
+            return node.item;
         }
     }
 }

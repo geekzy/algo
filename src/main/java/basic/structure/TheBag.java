@@ -47,10 +47,10 @@ public class TheBag {
         }
 
         void add(T item) {
-            Node<T> nItem = new Node<>();
-            nItem.item = item;
-            if (!isEmpty()) nItem.next = first;
-            first = nItem;
+            Node<T> node = new Node<>();
+            node.item = item;
+            node.next = first;
+            first = node;
             n = n + 1;
         }
     }
