@@ -10,7 +10,7 @@ import java.util.Scanner;
  * @author Imam Kurniawan (geekzy@gmail.com)
  */
 @SuppressWarnings({"unused", "unchecked"})
-public class BasicStucture {
+public class BasicStructure {
     /**
      * Simple Node with generic Type.
      *
@@ -29,6 +29,14 @@ public class BasicStucture {
          * Next linked node.
          */
         Node<T> next;
+        /**
+         * Left-side linked node
+         */
+        Node<T> left;
+        /**
+         * Right-side linked node 
+         */
+        Node<T> rigth;
     }
 
     /**
@@ -249,7 +257,7 @@ public class BasicStucture {
     }
 
     public static void main(String[] args) throws FileNotFoundException {
-        BasicStucture app = new BasicStucture();
+        BasicStructure app = new BasicStructure();
         app.start();
     }
 

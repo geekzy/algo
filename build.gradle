@@ -22,11 +22,12 @@ test {
 }
 
 task execute(type: JavaExec) {
-    main = 'hackerrank.AngryProfessor'
+    //main = 'hackerrank.AngryProfessor'
     //main = 'sadgewick.UnionFind'
     //main = 'graph.GraphTwoColors'
     //main = 'graph.GraphCycle'
     //main = 'graph.GraphDfsAlgorithm'
     //main = 'graph.GraphBfsAlgorithm'
+    main = 'graph.BasicStructure'
     classpath = sourceSets.main.runtimeClasspath
 }
