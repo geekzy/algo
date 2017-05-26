@@ -165,5 +165,6 @@ public class GraphCycle {
         System.out.println();
         System.out.print("Total : " + (totalEnd - totalStart) + "ms");
         ///////////////////////////////////////////////////////////////////////
+        sc.close();
     }
 }

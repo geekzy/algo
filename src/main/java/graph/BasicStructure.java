@@ -303,5 +303,6 @@ public class BasicStructure {
             System.out.println(n.item);
         }
         ///////////////////////////////////////////////////////////////////////
+        sc.close();
     }
 }

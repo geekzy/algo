@@ -181,5 +181,6 @@ public class GraphConnectedComp {
         System.out.println();
         System.out.print("Total : " + (totalEnd - totalStart) + "ms");
         ///////////////////////////////////////////////////////////////////////
+        sc.close();
     }
 }

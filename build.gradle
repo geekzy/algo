@@ -22,12 +22,15 @@ test {
 }
 
 task execute(type: JavaExec) {
-    //main = 'hackerrank.AngryProfessor'
-    //main = 'sadgewick.UnionFind'
-    //main = 'graph.GraphTwoColors'
-    //main = 'graph.GraphCycle'
-    //main = 'graph.GraphDfsAlgorithm'
-    //main = 'graph.GraphBfsAlgorithm'
+    //main = 'basic.structure.TheStack'
+    //main = 'basic.structure.TheQueue'
+    //main = 'basic.structure.TheBag'
+    //main = 'basic.backtrack.KnightTour'
+    //main = 'basic.backtrack.Permutation'
+    //main = 'basic.MapSteps'
+    //main = 'basic.RecursiveMethods'
+    //main = 'hackerrank.MergeLinkedList'
+    //main = 'hackerrank.TwoLinkedList'
     main = 'graph.BasicStructure'
     classpath = sourceSets.main.runtimeClasspath
 }
